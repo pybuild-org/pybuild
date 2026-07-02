@@ -22,7 +22,7 @@ func onTagOpen() {
 	case "use":
 		i.PopStack()
 
-		if file := n.Attrs["file"]; file != "" {
+		if file, ok := n.Attrs["file"]; file != "" && ok {
 			f, err := os.Open(file)
 			if err != nil {
 				log.Fatalln(err)
@@ -31,7 +31,7 @@ func onTagOpen() {
 			defer f.Close()
 			i.Run(f)
 
-		} else if url := n.Attrs["url"]; url != "" {
+		} else if url, ok := n.Attrs["url"]; url != "" && ok {
 			r, err := http.Get(url)
 			if err != nil {
 				log.Fatalln(err)
