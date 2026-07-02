@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"pybuild/util"
+	"strings"
 )
 
 func onTagOpen() {
@@ -52,6 +54,10 @@ func onTagClose() {
 
 	case "log":
 		log.Println(n.Value)
+		i.PushStack()
+
+	case "exec":
+		util.ExecCommand(strings.Fields(n.Value), os.Environ())
 		i.PushStack()
 
 	}
