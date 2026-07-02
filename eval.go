@@ -17,10 +17,10 @@ func onTagOpen() {
 	switch n.Name {
 
 	case "xml":
-		i.PushStack()
+		i.PopStack()
 
 	case "use":
-		i.PushStack()
+		i.PopStack()
 
 		if file := n.Attrs["file"]; file != "" {
 			f, err := os.Open(file)
@@ -54,11 +54,11 @@ func onTagClose() {
 
 	case "log":
 		log.Println(n.Value)
-		i.PushStack()
+		i.PopStack()
 
 	case "exec":
 		util.ExecCommand(strings.Fields(n.Value), os.Environ())
-		i.PushStack()
+		i.PopStack()
 
 	}
 }
