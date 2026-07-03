@@ -4,9 +4,10 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"pybuild/strprop"
-	"pybuild/util"
+	"os/exec"
 	"strings"
+
+	"github.com/pybuild-org/strprop"
 )
 
 func onTagOpen() {
@@ -81,7 +82,18 @@ func onTagClose() {
 		i.PopStack()
 
 	case "exec":
-		util.ExecCommand(strings.Fields(n.Value), os.Environ())
+		parts := strings.Fields(n.Value)
+		cmd := exec.Command(parts[0], parts[1:]...)
+
+		cmd.Env = os.Environ()
+		cmd.Stdin = os.Stdin
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+
+		if err := cmd.Run(); err != nil {
+			log.Fatalln(err)
+		}
+
 		i.PopStack()
 
 	case "config", "prop":
