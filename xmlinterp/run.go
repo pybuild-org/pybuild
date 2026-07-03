@@ -30,7 +30,7 @@ func (i *Interpreter) Run(r io.Reader) {
 			}
 
 			for _, attr := range t.Attr {
-				n.Attrs[attr.Name.Local] = attr.Value
+				n.Attrs[attr.Name.Local] = strings.TrimSpace(attr.Value)
 			}
 
 			i.PushStack(n)
