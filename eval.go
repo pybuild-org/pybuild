@@ -24,28 +24,22 @@ func onTagOpen() {
 	case "use":
 		i.PopStack()
 
-		name := n.Attrs["name"]
-		netMode := false
-
-		if strings.HasPrefix(name, "url:") {
-			netMode = true
-			name = strings.TrimPrefix(name, "url:")
-
-		} else if !strings.HasSuffix(name, ".xml") {
-			name = name + ".xml"
+		file := n.Attrs["file"]
+		if !strings.HasSuffix(file, ".xml") {
+			file = file + ".xml"
 		}
 
-		if netMode {
-			r, err := http.Get(name)
+		if strings.HasPrefix(file, "http://") || strings.HasPrefix(file, "https://") {
+			resp, err := http.Get(file)
 			if err != nil {
 				log.Fatalln(err)
 			}
 
-			defer r.Body.Close()
-			i.Run(r.Body)
+			defer resp.Body.Close()
+			i.Run(resp.Body)
 
 		} else {
-			f, err := os.Open(name)
+			f, err := os.Open(file)
 			if err != nil {
 				log.Fatalln(err)
 			}
@@ -80,15 +74,15 @@ func onTagOpen() {
 	case "run":
 		i.PopStack()
 
-		command, isCommand := n.Attrs["command"]
 		job, isJob := n.Attrs["job"]
+		command, isCommand := n.Attrs["command"]
 
-		if isCommand {
+		if isJob {
+			funcjob.Run(job)
+
+		} else if isCommand {
 			parts := strings.Fields(command)
 			util.RunCommand(parts, os.Environ())
-
-		} else if isJob {
-			funcjob.Run(job)
 		}
 
 	}
