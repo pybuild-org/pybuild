@@ -3,7 +3,6 @@ package xmlinterp
 import (
 	"encoding/xml"
 	"io"
-	"log"
 	"strings"
 )
 
@@ -14,10 +13,6 @@ func (i *Interpreter) Run(r io.Reader) {
 		token, err := decoder.Token()
 		if err == io.EOF {
 			break
-		}
-
-		if err != nil {
-			log.Fatalln(err)
 		}
 
 		switch t := token.(type) {
