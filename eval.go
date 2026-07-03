@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	strprop "pybuild/config"
+	"pybuild/strprop"
 	"pybuild/util"
 	"strings"
 )
