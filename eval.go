@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	"pybuild/job"
+	"pybuild/funcjob"
 	"pybuild/strprop"
 	"strings"
 )
@@ -81,7 +81,7 @@ func onTagOpen() {
 		i.PopStack()
 
 		name := n.Attrs["job"]
-		job.Run(name)
+		funcjob.Run(name)
 
 	}
 }

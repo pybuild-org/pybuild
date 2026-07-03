@@ -1,4 +1,4 @@
-package job
+package funcjob
 
 var jobs map[string]func()
 
