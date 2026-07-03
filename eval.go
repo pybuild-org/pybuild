@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"os/exec"
 	"pybuild/funcjob"
 	"pybuild/strprop"
+	"pybuild/util"
 	"strings"
 )
 
@@ -100,17 +100,7 @@ func onTagClose() {
 
 	case "exec":
 		parts := strings.Fields(n.Value)
-		cmd := exec.Command(parts[0], parts[1:]...)
-
-		cmd.Env = os.Environ()
-		cmd.Stdin = os.Stdin
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-
-		if err := cmd.Run(); err != nil {
-			log.Fatalln(err)
-		}
-
+		util.RunCommand(parts, os.Environ())
 		i.PopStack()
 
 	case "config", "prop":
