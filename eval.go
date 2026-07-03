@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"pybuild/job"
 	"strings"
 
 	"github.com/pybuild-org/strprop"
@@ -65,6 +66,12 @@ func onTagOpen() {
 		if ok && configType == "group" {
 			strprop.Update(pp.Attrs["name"], p.Attrs["name"], n.Attrs["name"], n.Attrs["value"])
 		}
+
+	case "run":
+		i.PopStack()
+
+		name := n.Attrs["job"]
+		job.Run(name)
 
 	}
 }
