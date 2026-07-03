@@ -25,10 +25,3 @@ func (i *Interpreter) CurrentNode() *Node {
 func (i *Interpreter) ParentNode() *Node {
 	return i.Node(-2)
 }
-
-func (i *Interpreter) SaveChild() {
-	pn := i.ParentNode()
-	if pn != nil {
-		pn.Childs = append(pn.Childs, i.CurrentNode())
-	}
-}

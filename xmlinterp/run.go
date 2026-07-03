@@ -24,10 +24,9 @@ func (i *Interpreter) Run(r io.Reader) {
 
 		case xml.StartElement:
 			n := &Node{
-				Name:   t.Name.Local,
-				Attrs:  make(map[string]string),
-				Value:  "",
-				Childs: make([]*Node, 0),
+				Name:  t.Name.Local,
+				Attrs: make(map[string]string),
+				Value: "",
 			}
 
 			for _, attr := range t.Attr {

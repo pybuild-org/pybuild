@@ -7,8 +7,7 @@ type Interpreter struct {
 }
 
 type Node struct {
-	Name   string
-	Attrs  map[string]string
-	Value  string
-	Childs []*Node
+	Name  string
+	Attrs map[string]string
+	Value string
 }
