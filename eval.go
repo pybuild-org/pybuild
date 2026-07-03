@@ -42,8 +42,8 @@ func onTagOpen() {
 				log.Fatalln(err)
 			}
 
+			defer r.Body.Close()
 			i.Run(r.Body)
-			r.Body.Close()
 
 		} else {
 			f, err := os.Open(name)
@@ -51,8 +51,8 @@ func onTagOpen() {
 				log.Fatalln(err)
 			}
 
+			defer f.Close()
 			i.Run(f)
-			f.Close()
 		}
 
 	case "config":
