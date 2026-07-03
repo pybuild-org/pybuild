@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"pybuild/config"
 	"pybuild/util"
 	"strings"
 )
@@ -41,6 +42,30 @@ func onTagOpen() {
 			i.Run(r.Body)
 		}
 
+	case "config":
+		configType, ok := n.Attrs["type"]
+		if ok && configType == "group" {
+			config.NewGroup(n.Attrs["name"])
+		}
+
+	case "prop":
+		i.PopStack()
+
+		p := i.ParentNode()
+		if p == nil || p.Name != "config" {
+			return
+		}
+
+		pp := i.Node(-3)
+		if pp == nil || pp.Name != "config" {
+			config.Update(p.Attrs["name"], "", n.Attrs["name"], n.Attrs["value"])
+		}
+
+		configType, ok := pp.Attrs["type"]
+		if ok && configType == "group" {
+			config.Update(pp.Attrs["name"], p.Attrs["name"], n.Attrs["name"], n.Attrs["value"])
+		}
+
 	}
 }
 
@@ -58,6 +83,9 @@ func onTagClose() {
 
 	case "exec":
 		util.ExecCommand(strings.Fields(n.Value), os.Environ())
+		i.PopStack()
+
+	case "config":
 		i.PopStack()
 
 	}
