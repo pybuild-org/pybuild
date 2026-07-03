@@ -49,8 +49,6 @@ func onTagOpen() {
 		}
 
 	case "prop":
-		i.PopStack()
-
 		p := i.ParentNode()
 		if p == nil || p.Name != "config" {
 			return
@@ -59,6 +57,7 @@ func onTagOpen() {
 		pp := i.Node(-3)
 		if pp == nil || pp.Name != "config" {
 			config.Update(p.Attrs["name"], "", n.Attrs["name"], n.Attrs["value"])
+			return
 		}
 
 		configType, ok := pp.Attrs["type"]
@@ -85,7 +84,7 @@ func onTagClose() {
 		util.ExecCommand(strings.Fields(n.Value), os.Environ())
 		i.PopStack()
 
-	case "config":
+	case "config", "prop":
 		i.PopStack()
 
 	}
