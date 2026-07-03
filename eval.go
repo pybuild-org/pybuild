@@ -25,23 +25,34 @@ func onTagOpen() {
 	case "use":
 		i.PopStack()
 
-		if file, ok := n.Attrs["file"]; file != "" && ok {
-			f, err := os.Open(file)
+		name := n.Attrs["name"]
+		netMode := false
+
+		if strings.HasPrefix(name, "url:") {
+			netMode = true
+			name = strings.TrimPrefix(name, "url:")
+
+		} else if !strings.HasSuffix(name, ".xml") {
+			name = name + ".xml"
+		}
+
+		if netMode {
+			r, err := http.Get(name)
 			if err != nil {
 				log.Fatalln(err)
 			}
 
-			defer f.Close()
-			i.Run(f)
-
-		} else if url, ok := n.Attrs["url"]; url != "" && ok {
-			r, err := http.Get(url)
-			if err != nil {
-				log.Fatalln(err)
-			}
-
-			defer r.Body.Close()
 			i.Run(r.Body)
+			r.Body.Close()
+
+		} else {
+			f, err := os.Open(name)
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			i.Run(f)
+			f.Close()
 		}
 
 	case "config":
