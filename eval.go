@@ -6,9 +6,8 @@ import (
 	"os"
 	"os/exec"
 	"pybuild/job"
+	"pybuild/strprop"
 	"strings"
-
-	"github.com/pybuild-org/strprop"
 )
 
 func onTagOpen() {
