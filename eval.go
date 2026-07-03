@@ -80,8 +80,16 @@ func onTagOpen() {
 	case "run":
 		i.PopStack()
 
-		name := n.Attrs["job"]
-		funcjob.Run(name)
+		command, isCommand := n.Attrs["command"]
+		job, isJob := n.Attrs["job"]
+
+		if isCommand {
+			parts := strings.Fields(command)
+			util.RunCommand(parts, os.Environ())
+
+		} else if isJob {
+			funcjob.Run(job)
+		}
 
 	}
 }
@@ -96,11 +104,6 @@ func onTagClose() {
 
 	case "log":
 		log.Println(n.Value)
-		i.PopStack()
-
-	case "exec":
-		parts := strings.Fields(n.Value)
-		util.RunCommand(parts, os.Environ())
 		i.PopStack()
 
 	case "config", "prop":
