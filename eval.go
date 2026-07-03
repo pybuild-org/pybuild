@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"pybuild/config"
+	strprop "pybuild/config"
 	"pybuild/util"
 	"strings"
 )
@@ -45,7 +45,7 @@ func onTagOpen() {
 	case "config":
 		configType, ok := n.Attrs["type"]
 		if ok && configType == "group" {
-			config.NewGroup(n.Attrs["name"])
+			strprop.Next(n.Attrs["name"])
 		}
 
 	case "prop":
@@ -56,13 +56,13 @@ func onTagOpen() {
 
 		pp := i.Node(-3)
 		if pp == nil || pp.Name != "config" {
-			config.Update(p.Attrs["name"], "", n.Attrs["name"], n.Attrs["value"])
+			strprop.Update(p.Attrs["name"], "", n.Attrs["name"], n.Attrs["value"])
 			return
 		}
 
 		configType, ok := pp.Attrs["type"]
 		if ok && configType == "group" {
-			config.Update(pp.Attrs["name"], p.Attrs["name"], n.Attrs["name"], n.Attrs["value"])
+			strprop.Update(pp.Attrs["name"], p.Attrs["name"], n.Attrs["name"], n.Attrs["value"])
 		}
 
 	}

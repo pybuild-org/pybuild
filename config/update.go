@@ -1,4 +1,4 @@
-package config
+package strprop
 
 import "reflect"
 
@@ -107,7 +107,7 @@ func Update(name, field, key, value string) {
 	}
 }
 
-func NewGroup(name string) {
+func Next(name string) {
 	target, ok := cfg[name]
 	if !ok {
 		return
