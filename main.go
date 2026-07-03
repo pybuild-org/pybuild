@@ -3,8 +3,7 @@ package main
 import (
 	"log"
 	"os"
-
-	"github.com/pybuild-org/xmlinterp"
+	"pybuild/xmlinterp"
 )
 
 var i *xmlinterp.Interpreter
