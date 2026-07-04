@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"pybuild/builder"
+	"pybuild/builder/standalone"
 	"pybuild/funcjob"
 	"pybuild/strprop"
 	"pybuild/xmlinterp"
@@ -36,6 +37,9 @@ func main() {
 
 	strprop.Bind("python", &builder.PythonConfig)
 	funcjob.Register("setup python", builder.SetupPython)
+
+	strprop.Bind("standalone targets", &standalone.Targets)
+	funcjob.Register("standalone build", standalone.Build)
 
 	defer f.Close()
 	i.Run(f)
