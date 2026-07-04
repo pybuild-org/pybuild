@@ -7,4 +7,7 @@ var BuilderConfig = struct {
 	Version string `prop:"version"`
 }{}
 
-func Setup() {}
+func Setup() {
+	cleanDir(".pybuild", false)
+	cleanDir(BuilderConfig.Output, false)
+}
