@@ -3,9 +3,6 @@ package main
 import (
 	"log"
 	"os"
-	"pybuild/builder/standalone"
-	"pybuild/funcjob"
-	"pybuild/strprop"
 	"pybuild/xmlinterp"
 )
 
@@ -30,9 +27,6 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-
-	strprop.Bind("standalone builder", &standalone.BuilderConfig)
-	funcjob.Register("setup standalone builder", standalone.SetupBuilder)
 
 	defer f.Close()
 	i.Run(f)
