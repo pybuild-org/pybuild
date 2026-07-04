@@ -3,6 +3,9 @@ package main
 import (
 	"log"
 	"os"
+	"pybuild/builder"
+	"pybuild/funcjob"
+	"pybuild/strprop"
 	"pybuild/xmlinterp"
 )
 
@@ -27,6 +30,9 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	strprop.Bind("builder", &builder.BuilderConfig)
+	funcjob.Register("setup builder", builder.Setup)
 
 	defer f.Close()
 	i.Run(f)
