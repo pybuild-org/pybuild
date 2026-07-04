@@ -89,7 +89,7 @@ func onTagOpen() {
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
 
-			log.Println("run command:", cmd.String())
+			log.Println("run command", cmd.String())
 			if err := cmd.Run(); err != nil {
 				log.Fatalln(err)
 			}

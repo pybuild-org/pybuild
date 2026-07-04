@@ -32,7 +32,10 @@ func main() {
 	}
 
 	strprop.Bind("builder", &builder.BuilderConfig)
-	funcjob.Register("setup builder", builder.Setup)
+	funcjob.Register("setup builder", builder.SetupBuilder)
+
+	strprop.Bind("python", &builder.PythonConfig)
+	funcjob.Register("setup python", builder.SetupPython)
 
 	defer f.Close()
 	i.Run(f)
