@@ -42,5 +42,6 @@ func main() {
 	funcjob.Register("standalone build", standalone.Build)
 
 	defer f.Close()
+	defer builder.Clean()
 	i.Run(f)
 }

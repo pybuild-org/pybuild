@@ -6,6 +6,7 @@ var (
 )
 
 var BuilderConfig = struct {
+	App     string `prop:"app"`
 	Source  string `prop:"source"`
 	Output  string `prop:"output"`
 	Version string `prop:"version"`
