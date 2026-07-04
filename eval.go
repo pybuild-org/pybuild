@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"pybuild/funcjob"
 	"pybuild/strprop"
-	"pybuild/util"
 	"strings"
 )
 
@@ -82,7 +82,17 @@ func onTagOpen() {
 
 		} else if isCommand {
 			parts := strings.Fields(command)
-			util.RunCommand(parts, os.Environ())
+			cmd := exec.Command(parts[0], parts[1:]...)
+
+			cmd.Env = os.Environ()
+			cmd.Stdin = os.Stdin
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+
+			log.Println("run command:", cmd.String())
+			if err := cmd.Run(); err != nil {
+				log.Fatalln(err)
+			}
 		}
 
 	}
