@@ -20,12 +20,17 @@ func Next(name string) {
 	}
 
 	valElem := v.Elem()
-	mapType := valElem.Type().Elem()
-	if mapType.Kind() != reflect.Map {
+	outerPtrType := valElem.Type().Elem()
+	if outerPtrType.Kind() != reflect.Pointer {
 		return
 	}
 
-	newMap := reflect.MakeMap(mapType)
-	newSlice := reflect.Append(valElem, newMap)
+	outerStructType := outerPtrType.Elem()
+	if outerStructType.Kind() != reflect.Struct {
+		return
+	}
+
+	newOuterPtr := reflect.New(outerStructType)
+	newSlice := reflect.Append(valElem, newOuterPtr)
 	valElem.Set(newSlice)
 }

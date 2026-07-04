@@ -50,41 +50,41 @@ func Update(name, field, key, value string) {
 			return
 		}
 
-		lastItem := valElem.Index(sliceLen - 1)
-		if lastItem.Kind() != reflect.Map {
+		lastItemPtr := valElem.Index(sliceLen - 1)
+		if lastItemPtr.Kind() != reflect.Pointer || lastItemPtr.IsNil() {
 			return
 		}
 
-		mapKey := reflect.ValueOf(field)
-		mapValue := lastItem.MapIndex(mapKey)
+		outerStructVal := lastItemPtr.Elem()
+		outerStructType := outerStructVal.Type()
 
-		if !mapValue.IsValid() || mapValue.IsNil() {
-			structPtrType := lastItem.Type().Elem()
-			if structPtrType.Kind() != reflect.Pointer {
-				return
+		var innerStructVal reflect.Value
+		foundField := false
+
+		for i := 0; i < outerStructType.NumField(); i++ {
+			structField := outerStructType.Field(i)
+
+			if structField.Tag.Get("prop") == field {
+				innerStructVal = outerStructVal.Field(i)
+				if innerStructVal.Kind() != reflect.Struct {
+					return
+				}
+
+				foundField = true
+				break
 			}
-
-			newStructPtr := reflect.New(structPtrType.Elem())
-			lastItem.SetMapIndex(mapKey, newStructPtr)
-			mapValue = newStructPtr
 		}
 
-		if mapValue.Kind() != reflect.Pointer {
+		if !foundField {
 			return
 		}
 
-		structVal := mapValue.Elem()
-		if structVal.Kind() != reflect.Struct {
-			return
-		}
+		innerStructType := innerStructVal.Type()
+		for i := 0; i < innerStructType.NumField(); i++ {
+			structField := innerStructType.Field(i)
 
-		structType := structVal.Type()
-		for i := 0; i < structType.NumField(); i++ {
-			structField := structType.Field(i)
-			propTag := structField.Tag.Get("prop")
-
-			if propTag == key {
-				fieldVal := structVal.Field(i)
+			if structField.Tag.Get("prop") == key {
+				fieldVal := innerStructVal.Field(i)
 				if !fieldVal.CanSet() {
 					return
 				}
