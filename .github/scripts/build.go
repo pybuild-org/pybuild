@@ -12,15 +12,14 @@ type Target struct {
 	GOARCH string `json:"GOARCH"`
 }
 
-var Targets []Target
-
 func main() {
-	platforms, err := os.Open(".github/platforms.json")
+	f, err := os.Open(".github/build/targets.json")
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	if err := json.NewDecoder(platforms).Decode(&Targets); err != nil {
+	var Targets []Target
+	if err := json.NewDecoder(f).Decode(&Targets); err != nil {
 		log.Fatalln(err)
 	}
 
