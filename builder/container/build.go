@@ -2,13 +2,8 @@ package container
 
 import (
 	"fmt"
-	"log"
 	"path/filepath"
 	"pybuild/builder"
-
-	"github.com/google/go-containerregistry/pkg/name"
-	v1 "github.com/google/go-containerregistry/pkg/v1"
-	"github.com/google/go-containerregistry/pkg/v1/remote"
 )
 
 func Build() {
@@ -57,25 +52,11 @@ func Build() {
 			}
 		}
 
-		var baseImg v1.Image
-
-		{
-			ref, err := name.ParseReference(target.Image.Base)
-			if err != nil {
-				log.Fatalln(err)
-			}
-
-			img, err := remote.Image(ref, remote.WithPlatform(v1.Platform{
-				Architecture: target.Image.Arch,
-				OS:           target.Image.OS,
-			}))
-
-			if err != nil {
-				log.Fatalln(err)
-			}
-
-			baseImg = img
-		}
+		baseImg := useImage(
+			target.Image.Base,
+			target.Image.Arch,
+			target.Image.OS,
+		)
 
 	}
 }
