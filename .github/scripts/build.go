@@ -36,8 +36,8 @@ func main() {
 
 		go func(target Target) {
 			defer func() {
-				<-limit
 				wg.Done()
+				<-limit
 			}()
 
 			log.Println("build", fmt.Sprintf("%s/%s", target.GOOS, target.GOARCH))
