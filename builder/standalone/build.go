@@ -83,7 +83,7 @@ func Build() {
 			data := map[string]string{
 				"RUN": target.Launcher.Run,
 				"PYTHON": builder.MkPyBinPath(
-					builder.PythonConfig.OS,
+					target.Python.OS,
 					builder.BuilderConfig.Version,
 				),
 			}
