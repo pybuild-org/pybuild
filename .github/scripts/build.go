@@ -28,7 +28,7 @@ func main() {
 	}
 
 	var wg sync.WaitGroup
-	limit := make(chan struct{}, 10)
+	limit := make(chan struct{}, 4)
 
 	for _, target := range targets {
 		wg.Add(1)
@@ -51,7 +51,7 @@ func main() {
 			file := filepath.Join(".github/build/dist", name)
 
 			run(
-				[]string{"go", "build", "-o", file, "."},
+				[]string{"go", "build", "-ldflags", "-s -w", "-o", file, "."},
 				[]string{
 					"CGO_ENABLED=0",
 					fmt.Sprintf("HOME=%s", os.Getenv("HOME")),
