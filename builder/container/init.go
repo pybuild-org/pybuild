@@ -5,9 +5,11 @@ var MetaConfig = struct {
 }{}
 
 var Targets = []*struct {
-	Base struct {
-		Image string `prop:"image"`
-	} `prop:"base"`
+	Image struct {
+		Base string `prop:"base"`
+		Arch string `prop:"arch"`
+		OS   string `prop:"os"`
+	} `prop:"image"`
 
 	Python struct {
 		Arch string `prop:"arch"`

@@ -60,12 +60,16 @@ func Build() {
 		var baseImg v1.Image
 
 		{
-			ref, err := name.ParseReference(target.Base.Image)
+			ref, err := name.ParseReference(target.Image.Base)
 			if err != nil {
 				log.Fatalln(err)
 			}
 
-			img, err := remote.Image(ref)
+			img, err := remote.Image(ref, remote.WithPlatform(v1.Platform{
+				Architecture: target.Image.Arch,
+				OS:           target.Image.OS,
+			}))
+
 			if err != nil {
 				log.Fatalln(err)
 			}
