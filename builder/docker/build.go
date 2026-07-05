@@ -55,11 +55,11 @@ func Build() {
 			}
 		}
 
-		image := appendDir(useImage(
+		image := useImage(
 			target.Image.Base,
 			target.Image.OS,
 			target.Image.Arch,
-		), baseDir, "app")
+		)
 
 		{
 			cfg, err := image.ConfigFile()
@@ -79,11 +79,15 @@ func Build() {
 			image = newImg
 		}
 
+		cacheDir := filepath.Join(builder.TempDir, "cache")
+		builder.CleanDir(cacheDir, false)
+
 		saveImage(
-			image, imageName,
+			appendDir(image, baseDir, "app", cacheDir), imageName,
 			filepath.Join(builder.BuilderConfig.Output, dirName+".tar"),
 		)
 
+		builder.CleanDir(cacheDir, true)
 		builder.CleanDir(baseDir, true)
 	}
 }

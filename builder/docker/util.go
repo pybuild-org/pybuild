@@ -2,6 +2,7 @@ package docker
 
 import (
 	"archive/tar"
+	"bufio"
 	"io"
 	"log"
 	"os"
@@ -11,7 +12,6 @@ import (
 	v1 "github.com/google/go-containerregistry/pkg/v1"
 	"github.com/google/go-containerregistry/pkg/v1/mutate"
 	"github.com/google/go-containerregistry/pkg/v1/remote"
-	"github.com/google/go-containerregistry/pkg/v1/stream"
 	"github.com/google/go-containerregistry/pkg/v1/tarball"
 )
 
@@ -38,69 +38,74 @@ func useImage(image, os, arch string) v1.Image {
 	return img
 }
 
-func appendDir(img v1.Image, src, dst string) v1.Image {
+func appendDir(img v1.Image, src, dst, cache string) v1.Image {
 	log.Println("copy", src, "to", dst)
 
-	pr, pw := io.Pipe()
+	tmpFile, err := os.CreateTemp(cache, "layer-*.tar")
+	if err != nil {
+		log.Fatalln(err)
+	}
 
-	go func() {
-		tw := tar.NewWriter(pw)
+	defer tmpFile.Close()
+	bufWriter := bufio.NewWriterSize(tmpFile, 4*1024*1024)
+	tw := tar.NewWriter(bufWriter)
 
-		err := filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
-			if err != nil {
-				return err
-			}
-
-			relPath, err := filepath.Rel(src, path)
-			if err != nil {
-				return err
-			}
-
-			if relPath == "." {
-				return nil
-			}
-
-			header, err := tar.FileInfoHeader(info, "")
-			if err != nil {
-				return err
-			}
-
-			targetPath := dst + "/" + filepath.ToSlash(relPath)
-			header.Name = targetPath
-			if err := tw.WriteHeader(header); err != nil {
-				return err
-			}
-
-			if info.Mode().IsRegular() {
-				file, err := os.Open(path)
-				if err != nil {
-					return err
-				}
-
-				defer file.Close()
-				if _, err := io.Copy(tw, file); err != nil {
-					return err
-				}
-			}
-
-			return nil
-		})
-
+	if err := filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
-			tw.Close()
-			pw.CloseWithError(err)
-			return
+			return err
 		}
 
-		if err := tw.Close(); err != nil {
-			pw.CloseWithError(err)
-			return
+		relPath, err := filepath.Rel(src, path)
+		if err != nil {
+			return err
 		}
 
-		pw.Close()
-	}()
+		if relPath == "." {
+			return nil
+		}
 
-	layer := stream.NewLayer(pr)
+		header, err := tar.FileInfoHeader(info, "")
+		if err != nil {
+			return err
+		}
+
+		targetPath := dst + "/" + filepath.ToSlash(relPath)
+		header.Name = targetPath
+		if err := tw.WriteHeader(header); err != nil {
+			return err
+		}
+
+		if info.Mode().IsRegular() {
+			file, err := os.Open(path)
+			if err != nil {
+				return err
+			}
+
+			defer file.Close()
+			if _, err := io.Copy(tw, file); err != nil {
+				return err
+			}
+		}
+
+		return nil
+
+	}); err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := tw.Close(); err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := bufWriter.Flush(); err != nil {
+		log.Fatalln(err)
+	}
+
+	layer, err := tarball.LayerFromFile(tmpFile.Name())
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	newImg, err := mutate.AppendLayers(img, layer)
 	if err != nil {
 		log.Fatalln(err)
