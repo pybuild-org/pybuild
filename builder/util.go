@@ -5,7 +5,6 @@ import (
 	"compress/gzip"
 	"fmt"
 	"io"
-	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -135,71 +134,6 @@ func RunCommand(parts ...string) {
 
 	log.Println("run command", cmd.String())
 	if err := cmd.Run(); err != nil {
-		log.Fatalln(err)
-	}
-}
-
-func CopyFile(src, dst string, d fs.DirEntry) error {
-	sf, err := os.Open(src)
-	if err != nil {
-		return err
-	}
-
-	defer sf.Close()
-	if err := os.MkdirAll(filepath.Dir(dst), 0755); err != nil {
-		return err
-	}
-
-	info, err := d.Info()
-	if err != nil {
-		return err
-	}
-
-	df, err := os.OpenFile(dst, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, info.Mode())
-	if err != nil {
-		return err
-	}
-
-	defer df.Close()
-	if _, err := io.Copy(df, sf); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func CopyDir(src, dst string) {
-	log.Println("copy", src, "to", dst)
-
-	if err := filepath.WalkDir(src, func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-
-		relPath, err := filepath.Rel(src, path)
-		if err != nil {
-			return err
-		}
-
-		if d.IsDir() && d.Name() == "__pycache__" {
-			return filepath.SkipDir
-		}
-
-		targetPath := filepath.Join(dst, relPath)
-
-		if d.IsDir() {
-			info, err := d.Info()
-			if err != nil {
-				return err
-			}
-
-			return os.MkdirAll(targetPath, info.Mode())
-
-		} else {
-			return CopyFile(path, targetPath, d)
-		}
-
-	}); err != nil {
 		log.Fatalln(err)
 	}
 }

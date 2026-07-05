@@ -22,7 +22,7 @@ func Build() {
 		baseDir := filepath.Join(builder.TempDir, dirName)
 		builder.CleanDir(baseDir, false)
 
-		builder.CopyDir(builder.BuilderConfig.Source, baseDir)
+		CopyDir(builder.BuilderConfig.Source, baseDir)
 
 		{
 			url := builder.MkPyDownloadUrl(
