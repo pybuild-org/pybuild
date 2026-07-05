@@ -55,7 +55,7 @@ func main() {
 					"CGO_ENABLED=0",
 					fmt.Sprintf("GOOS=%s", target.GOOS),
 					fmt.Sprintf("GOARCH=%s", target.GOARCH),
-				}
+				},
 			)
 		}(target)
 	}
