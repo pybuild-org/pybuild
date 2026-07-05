@@ -2,8 +2,11 @@ package docker
 
 import (
 	"fmt"
+	"log"
 	"path/filepath"
 	"pybuild/builder"
+
+	"github.com/google/go-containerregistry/pkg/v1/mutate"
 )
 
 func Build() {
@@ -57,6 +60,29 @@ func Build() {
 			target.Image.OS,
 			target.Image.Arch,
 		), baseDir, "app")
+
+		{
+			cfg, err := image.ConfigFile()
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			newCfg := cfg.DeepCopy()
+			newCfg.OS = target.Image.OS
+			newCfg.Architecture = target.Image.Arch
+
+			newImg, err := mutate.ConfigFile(image, newCfg)
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			image = newImg
+		}
+
+		saveImage(
+			image, imageName,
+			filepath.Join(builder.BuilderConfig.Output, dirName+".tar"),
+		)
 
 		builder.CleanDir(baseDir, true)
 	}

@@ -12,6 +12,7 @@ import (
 	"github.com/google/go-containerregistry/pkg/v1/mutate"
 	"github.com/google/go-containerregistry/pkg/v1/remote"
 	"github.com/google/go-containerregistry/pkg/v1/stream"
+	"github.com/google/go-containerregistry/pkg/v1/tarball"
 )
 
 func useImage(image, os, arch string) v1.Image {
@@ -106,4 +107,17 @@ func appendDir(img v1.Image, src, dst string) v1.Image {
 	}
 
 	return newImg
+}
+
+func saveImage(img v1.Image, imageName, outputPath string) {
+	log.Println("save image to", outputPath)
+
+	ref, err := name.ParseReference(imageName)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := tarball.WriteToFile(outputPath, ref, img); err != nil {
+		log.Fatalln(err)
+	}
 }
