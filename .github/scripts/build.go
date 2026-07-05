@@ -52,12 +52,12 @@ func main() {
 
 			run(
 				[]string{"go", "build", "-ldflags", "-s -w", "-o", file, "."},
-				[]string{
+				append(
+					os.Environ(),
 					"CGO_ENABLED=0",
-					fmt.Sprintf("HOME=%s", os.Getenv("HOME")),
 					fmt.Sprintf("GOOS=%s", target.GOOS),
 					fmt.Sprintf("GOARCH=%s", target.GOARCH),
-				},
+				),
 			)
 		}(target)
 	}
