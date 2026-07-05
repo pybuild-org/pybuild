@@ -42,7 +42,8 @@ func main() {
 	strprop.Bind("standalone targets", &standalone.Targets)
 	funcjob.Register("build standalone", standalone.Build)
 
-	strprop.Bind("container", &container.ContainerConfig)
+	strprop.Bind("container meta", &container.MetaConfig)
+	strprop.Bind("container targets", &container.Targets)
 	funcjob.Register("build container", container.Build)
 
 	defer f.Close()
