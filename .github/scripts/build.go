@@ -54,9 +54,9 @@ func main() {
 				[]string{"go", "build", "-o", file, "."},
 				[]string{
 					"CGO_ENABLED=0",
+					fmt.Sprintf("HOME=%s", os.Getenv("HOME")),
 					fmt.Sprintf("GOOS=%s", target.GOOS),
 					fmt.Sprintf("GOARCH=%s", target.GOARCH),
-					"GOCACHE=/tmp/go-cache",
 				},
 			)
 		}(target)
