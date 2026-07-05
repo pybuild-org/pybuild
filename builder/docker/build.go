@@ -52,11 +52,11 @@ func Build() {
 			}
 		}
 
-		image := useImage(
+		image := appendDir(useImage(
 			target.Image.Base,
 			target.Image.OS,
 			target.Image.Arch,
-		)
+		), baseDir, "app")
 
 		builder.CleanDir(baseDir, true)
 	}
