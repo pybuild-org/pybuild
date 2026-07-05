@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"pybuild/builder"
+	"pybuild/builder/container"
 	"pybuild/builder/standalone"
 	"pybuild/funcjob"
 	"pybuild/strprop"
@@ -39,7 +40,10 @@ func main() {
 	funcjob.Register("setup python", builder.SetupPython)
 
 	strprop.Bind("standalone targets", &standalone.Targets)
-	funcjob.Register("standalone build", standalone.Build)
+	funcjob.Register("build standalone", standalone.Build)
+
+	strprop.Bind("container", &container.ContainerConfig)
+	funcjob.Register("build container", container.Build)
 
 	defer f.Close()
 	defer builder.Clean()
