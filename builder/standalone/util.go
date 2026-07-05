@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 )
 
-func CopyFile(src, dst string, d fs.DirEntry) error {
+func copyFile(src, dst string, d fs.DirEntry) error {
 	sf, err := os.Open(src)
 	if err != nil {
 		return err
@@ -38,7 +38,7 @@ func CopyFile(src, dst string, d fs.DirEntry) error {
 	return nil
 }
 
-func CopyDir(src, dst string) {
+func copyDir(src, dst string) {
 	log.Println("copy", src, "to", dst)
 
 	if err := filepath.WalkDir(src, func(path string, d fs.DirEntry, err error) error {
@@ -66,7 +66,7 @@ func CopyDir(src, dst string) {
 			return os.MkdirAll(targetPath, info.Mode())
 
 		} else {
-			return CopyFile(path, targetPath, d)
+			return copyFile(path, targetPath, d)
 		}
 
 	}); err != nil {
