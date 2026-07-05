@@ -98,5 +98,7 @@ func Build() {
 			baseDir,
 			filepath.Join(builder.BuilderConfig.Output, dirName+".zip"),
 		)
+
+		builder.CleanDir(baseDir, true)
 	}
 }
