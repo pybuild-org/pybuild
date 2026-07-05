@@ -52,6 +52,12 @@ func Build() {
 			}
 		}
 
+		image := useImage(
+			target.Image.Base,
+			target.Image.OS,
+			target.Image.Arch,
+		)
+
 		builder.CleanDir(baseDir, true)
 	}
 }
