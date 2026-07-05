@@ -1,0 +1,41 @@
+name: 'setup pybuild'
+description: 'install pybuild cli'
+
+inputs:
+    version:
+        description: 'version'
+        required: false
+        default: 'latest'
+
+    goos:
+        description: 'os'
+        required: false
+        default: 'linux'
+
+    goarch:
+        description: 'arch'
+        required: false
+        default: 'amd64'
+
+runs:
+    using: 'composite'
+    steps:
+        - name: 'url'
+          id: url
+          shell: bash
+          run: |
+              base="https://github.com/pybuild-org/pybuild/releases"
+              file="pybuild-${{ inputs.goos }}-${{ inputs.goarch }}"
+              if [ "${{ inputs.version }}" = "latest" ]; then
+                echo "link=${base}/latest/download/${file}" >> $GITHUB_OUTPUT
+              else
+                echo "link=${base}/download/${inputs.version}/${file}" >> $GITHUB_OUTPUT
+              fi
+
+        - name: 'install'
+          shell: bash
+          run: |
+              mkdir -p "$home/.local/bin"
+              curl -sSL "${{ steps.url.outputs.link }}" -o "$home/.local/bin/pybuild"
+              chmod +x "$home/.local/bin/pybuild"
+              echo "$home/.local/bin" >> $GITHUB_PATH
