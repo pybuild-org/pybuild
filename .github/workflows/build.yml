@@ -11,10 +11,6 @@ jobs:
         steps:
             - name: checkout
               uses: actions/checkout@main
-              with:
-                  sparse-checkout-cone-mode: false
-                  sparse-checkout: |
-                      .github
 
             - name: setup go
               uses: actions/setup-go@main
@@ -30,5 +26,11 @@ jobs:
             - name: make dist dir
               run: mkdir -p .github/build/dist
 
+            - name: install dependencies
+              run: go mod tidy
+
             - name: run build
               run: go run .github/scripts/build.go
+
+            - name: list dist
+              run: ls -alh .github/build/dist
