@@ -25,17 +25,28 @@ runs:
           shell: bash
           run: |
               base="https://github.com/pybuild-org/pybuild/releases"
-              file="pybuild-${{ inputs.goos }}-${{ inputs.goarch }}"
+
+              ext=""
+              if [ "${{ inputs.goos }}" = "windows" ]; then
+                ext=".exe"
+              fi
+
+              file="pybuild-${{ inputs.goos }}-${{ inputs.goarch }}${ext}"
+
               if [ "${{ inputs.version }}" = "latest" ]; then
                 echo "link=${base}/latest/download/${file}" >> $GITHUB_OUTPUT
               else
                 echo "link=${base}/download/${inputs.version}/${file}" >> $GITHUB_OUTPUT
               fi
 
+              echo "ext=${ext}" >> $GITHUB_OUTPUT
+
         - name: 'install'
           shell: bash
           run: |
-              mkdir -p "$home/.local/bin"
-              curl -sSL "${{ steps.url.outputs.link }}" -o "$home/.local/bin/pybuild"
-              chmod +x "$home/.local/bin/pybuild"
-              echo "$home/.local/bin" >> $GITHUB_PATH
+              mkdir -p "$HOME/.local/bin"
+              target="$HOME/.local/bin/pybuild${{ steps.url.outputs.ext }}"
+
+              curl -sSL "${{ steps.url.outputs.link }}" -o "$target"
+              chmod +x "$target"
+              echo "$HOME/.local/bin" >> $GITHUB_PATH
