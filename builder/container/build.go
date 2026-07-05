@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"path/filepath"
 	"pybuild/builder"
+
+	v1 "github.com/google/go-containerregistry/pkg/v1"
 )
 
 func Build() {
@@ -52,11 +54,17 @@ func Build() {
 			}
 		}
 
-		baseImg := useImage(
-			target.Image.Base,
-			target.Image.Arch,
-			target.Image.OS,
-		)
+		var image v1.Image
+
+		{
+			baseImg := useImage(
+				target.Image.Base,
+				target.Image.Arch,
+				target.Image.OS,
+			)
+
+			image = appendDirLayer(baseImg, baseDir, "/app")
+		}
 
 	}
 }

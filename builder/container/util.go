@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"github.com/google/go-containerregistry/pkg/name"
 	v1 "github.com/google/go-containerregistry/pkg/v1"
@@ -35,19 +34,8 @@ func useImage(base, arch, os string) v1.Image {
 	return img
 }
 
-func copyDirToImageLayer(base v1.Image, src, target string) v1.Image {
-	log.Println("copy", src, "to", target)
-
-	tmpTar, err := os.CreateTemp("", "image-layer-*.tar")
-	if err != nil {
-		log.Println(err)
-	}
-
-	defer os.Remove(tmpTar.Name())
-	defer tmpTar.Close()
-
-	tw := tar.NewWriter(tmpTar)
-	if err = filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
+func streamDirToTar(src, dst string, tw *tar.Writer) error {
+	return filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -57,52 +45,59 @@ func copyDirToImageLayer(base v1.Image, src, target string) v1.Image {
 			return err
 		}
 
-		if relPath == "." {
+		tarPath := filepath.ToSlash(filepath.Join(dst, relPath))
+		if tarPath == dst && info.IsDir() {
 			return nil
 		}
 
-		header, err := tar.FileInfoHeader(info, info.Name())
+		header, err := tar.FileInfoHeader(info, "")
 		if err != nil {
 			return err
 		}
 
-		tarPath := filepath.ToSlash(filepath.Join(target, relPath))
-		header.Name = strings.TrimPrefix(tarPath, "/")
+		header.Name = tarPath
 		if err := tw.WriteHeader(header); err != nil {
 			return err
 		}
 
-		if info.Mode().IsRegular() {
-			file, err := os.Open(path)
-			if err != nil {
-				return err
-			}
-
-			defer file.Close()
-			if _, err := io.Copy(tw, file); err != nil {
-				return err
-			}
+		if !info.Mode().IsRegular() {
+			return nil
 		}
 
-		return nil
+		file, err := os.Open(path)
+		if err != nil {
+			return err
+		}
 
-	}); err != nil {
-		log.Println(err)
-	}
+		defer file.Close()
+		_, err = io.Copy(tw, file)
+		return err
+	})
+}
 
-	tw.Close()
+func appendDirLayer(base v1.Image, src, target string) v1.Image {
+	log.Println("copy", src, "to", target)
 
-	layer, err := tarball.LayerFromOpener(func() (io.ReadCloser, error) {
-		return os.Open(tmpTar.Name())
+	newLayer, err := tarball.LayerFromOpener(func() (io.ReadCloser, error) {
+		pr, pw := io.Pipe()
+
+		go func() {
+			tw := tar.NewWriter(pw)
+			err := streamDirToTar(src, target, tw)
+			tw.Close()
+			pw.CloseWithError(err)
+		}()
+
+		return pr, nil
 	})
 
 	if err != nil {
-		log.Println(err)
+		log.Fatalln(err)
 	}
 
-	newImg, err := mutate.AppendLayers(base, layer)
+	newImg, err := mutate.AppendLayers(base, newLayer)
 	if err != nil {
-		log.Println(err)
+		log.Fatalln(err)
 	}
 
 	return newImg
