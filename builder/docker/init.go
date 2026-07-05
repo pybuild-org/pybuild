@@ -1,4 +1,4 @@
-package container
+package docker
 
 var MetaConfig = struct {
 	Tag string `prop:"tag"`

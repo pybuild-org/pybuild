@@ -1,13 +1,9 @@
-package container
+package docker
 
 import (
 	"fmt"
-	"log"
 	"path/filepath"
 	"pybuild/builder"
-
-	v1 "github.com/google/go-containerregistry/pkg/v1"
-	"github.com/google/go-containerregistry/pkg/v1/mutate"
 )
 
 func Build() {
@@ -18,7 +14,7 @@ func Build() {
 	)
 
 	for _, target := range Targets {
-		dirName := target.Python.Arch + "-" + target.Python.OS + "-" + "container"
+		dirName := target.Python.Arch + "-" + target.Python.OS + "-docker-image"
 		baseDir := filepath.Join(builder.TempDir, dirName)
 		builder.CleanDir(baseDir, false)
 
@@ -55,51 +51,6 @@ func Build() {
 				}, target.Pip.Downloads...)...)
 			}
 		}
-
-		var finalImg v1.Image
-
-		{
-			baseImg := useImage(
-				target.Image.Base,
-				target.Image.Arch,
-				target.Image.OS,
-			)
-
-			finalImg = appendDirLayer(baseImg, baseDir, "/app")
-		}
-
-		{
-			cfg, err := finalImg.ConfigFile()
-			if err != nil {
-				log.Fatalln(err)
-			}
-
-			cfg = cfg.DeepCopy()
-
-			cfg.OS = target.Image.OS
-			cfg.Architecture = target.Image.Arch
-
-			finalImg, err = mutate.ConfigFile(finalImg, cfg)
-			if err != nil {
-				log.Fatalln(err)
-			}
-		}
-
-		saveDockerImage(
-			finalImg, imageName,
-			filepath.Join(
-				builder.BuilderConfig.Output,
-				dirName+"-"+"docker.tar",
-			),
-		)
-
-		saveOciImage(
-			finalImg, imageName,
-			filepath.Join(
-				builder.BuilderConfig.Output,
-				dirName+"-"+"oci.tar",
-			),
-		)
 
 		builder.CleanDir(baseDir, true)
 	}

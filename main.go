@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 	"pybuild/builder"
-	"pybuild/builder/container"
+	"pybuild/builder/docker"
 	"pybuild/builder/standalone"
 	"pybuild/funcjob"
 	"pybuild/strprop"
@@ -42,9 +42,9 @@ func main() {
 	strprop.Bind("standalone targets", &standalone.Targets)
 	funcjob.Register("build standalone", standalone.Build)
 
-	strprop.Bind("container meta", &container.MetaConfig)
-	strprop.Bind("container targets", &container.Targets)
-	funcjob.Register("build container", container.Build)
+	strprop.Bind("docker image meta", &docker.MetaConfig)
+	strprop.Bind("docker image targets", &docker.Targets)
+	funcjob.Register("docker build", docker.Build)
 
 	defer f.Close()
 	defer builder.Clean()
