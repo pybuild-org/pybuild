@@ -20,6 +20,7 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+	defer f.Close()
 
 	var targets []Target
 	if err := json.NewDecoder(f).Decode(&targets); err != nil {
@@ -55,10 +56,13 @@ func main() {
 					"CGO_ENABLED=0",
 					fmt.Sprintf("GOOS=%s", target.GOOS),
 					fmt.Sprintf("GOARCH=%s", target.GOARCH),
+					"GOCACHE=/tmp/go-cache",
 				},
 			)
 		}(target)
 	}
+
+	wg.Wait()
 }
 
 func run(parts, env []string) {
