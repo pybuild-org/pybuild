@@ -64,10 +64,10 @@ jobs:
                   python-version: '3.12'
 
             - name: install dependencies
-              run: python3.12 -m pip install openai
+              run: python3 -m pip install openai
 
             - name: run translate
-              run: python3.12 .github/scripts/translate.py
+              run: python3 .github/scripts/translate.py
 
               env:
                   AI_API_KEY: ${{ secrets.AI_API_KEY }}
