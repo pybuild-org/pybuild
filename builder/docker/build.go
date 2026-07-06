@@ -114,7 +114,7 @@ func Build() {
 			newCfg.OS = target.Image.OS
 			newCfg.Architecture = target.Image.Arch
 			newCfg.Config.Cmd = nil
-			newCfg.Config.Entrypoint = []string{"/app/launcher.sh"}
+			newCfg.Config.Entrypoint = []string{"/bin/sh", "/app/launcher.sh"}
 			if isWindows {
 				newCfg.Config.Entrypoint = []string{"C:\\app\\launcher.cmd"}
 			}
