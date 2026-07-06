@@ -7,7 +7,38 @@ permissions:
     contents: write
 
 jobs:
+    translate_docs:
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout
+              uses: actions/checkout@main
+
+            - name: setup python
+              uses: actions/setup-python@main
+              with:
+                  python-version: '3.12'
+
+            - name: install dependencies
+              run: python3 -m pip install openai
+
+            - name: run translate
+              run: python3 .github/scripts/translate.py
+
+              env:
+                  AI_API_KEY: ${{ secrets.AI_API_KEY }}
+                  AI_API_URL: ${{ vars.AI_API_URL }}
+                  AI_MODEL: ${{ vars.AI_MODEL }}
+
+            - name: commit and push
+              run: |
+                  git config --global user.name "github-actions[bot]"
+                  git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git add .
+                  git diff-index --quiet HEAD || git commit -m "translate docs"
+                  git push
+
     build_pybuild:
+        needs: translate_docs
         runs-on: ubuntu-latest
         steps:
             - name: checkout
@@ -51,33 +82,3 @@ jobs:
 
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    translate_docs:
-        runs-on: ubuntu-latest
-        steps:
-            - name: checkout
-              uses: actions/checkout@main
-
-            - name: setup python
-              uses: actions/setup-python@main
-              with:
-                  python-version: '3.12'
-
-            - name: install dependencies
-              run: python3 -m pip install openai
-
-            - name: run translate
-              run: python3 .github/scripts/translate.py
-
-              env:
-                  AI_API_KEY: ${{ secrets.AI_API_KEY }}
-                  AI_API_URL: ${{ vars.AI_API_URL }}
-                  AI_MODEL: ${{ vars.AI_MODEL }}
-
-            - name: commit and push
-              run: |
-                  git config --global user.name "github-actions[bot]"
-                  git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-                  git add .
-                  git diff-index --quiet HEAD || git commit -m "translate docs"
-                  git push
