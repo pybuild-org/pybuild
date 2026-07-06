@@ -1,27 +1,16 @@
 # 使用方法
 
-## 本地執行
+## 本地运行
 
-在 https://github.com/pybuild-org/pybuild/releases 中下載預編譯的二進位檔案
+在 https://github.com/pybuild-org/pybuild/releases 中下载预编译的二进制文件
 
-執行 `pybuild` 即可開始編譯 `target.xml`
+运行 `pybuild` 即可开始编译 `target.xml`
 
-指定.xml`
+指定配置文件 `pybuild custom.xml`
 
-指定配置檔案 `pybuild custom.xml`
-
-## Github Action 執行
+## Github Action 运行
 
 ```yaml
-- name: setup pybuild
-  uses: pybuild-org/pybuild@main
-  with: # optional
-      version: 'latest' # default
-      goos: 'linux' # default
-
-指定配置檔案 `pybuild custom.xml`
-
-## Github Action 執行動作
 - name: setup pybuild
   uses: pybuild-org/pybuild@main
   with: # optional
@@ -30,64 +19,64 @@
       goarch: 'amd64' # default
 ```
 
-然後 `pybuild` 命令在之後的任務中可用
+然后 `pybuild` 命令在之后的任务中可用
 
-# 標籤用法
+# 标签用法
 
-## xml 標籤
+## xml 标签
 
 ```xml
 <xml></xml>
 ```
 
-沒有任何用處的佔位符，不佔用堆疊，可以寫任意多次，任意多層
+没有任何用处的占位符，不占用栈，可以写任意多次，任意多层
 
-## use 標籤
+## use 标签
 
 ```xml
 <use file="" />
 ```
 
-引入一段外部的 xml 內容，並立即在當前上下文中執行
+引入一段外部的 xml 内容，并立即在当前上下文中执行
 
-`file` 參數可以是一個檔案路徑，或是一個以 http(s):// 開頭的連結
+`file` 参数可以是一个文件路径，或者一个以 http(s):// 开头的链接
 
-如果不加 `.xml` 副檔名，`use` 標籤會自動加上
+如果不加 `.xml` 后缀，`use` 标签会自动加上
 
-## config 標籤
+## config 标签
 
 ```xml
 <config [type="group"] name=""><config>
 ```
 
-用於聲明配置的標籤，`name` 用於聲明配置名稱
+用于声明配置的标签，`name` 用于声明配置名称
 
-`type="group"` 是可選的，用於聲明一個組配置，此時該 `config` 標籤由若干子 `config` 標籤共同聲明
+`type="group"` 是可选的，用于声明一个组配置，此时该 `config` 标签由若干子 `config` 标签共同声明
 
-## prop 標籤
+## prop 标签
 
 ```xml
 <prop name="" value="" />
 ```
 
-用於聲明配置項具體值的標籤，`name` 用於聲明欄位名稱，`value` 用於聲明欄位值
+用于声明配置项具体值的标签，`name` 用于声明字段名称，`value` 用于声明字段值
 
-## run 標籤
+## run 标签
 
 ```xml
 <run job="" | command="" />
 ```
 
-用於執行任務的標籤，`job` 和 `command` 二選一
+用于执行任务的标签，`job` 和 `command` 二选一
 
-`job` 用於聲明任務名稱，用於執行一個預配置的任務
+`job` 用于声明任务名称，用于执行一个预配置的任务
 
-`command` 用於聲明命令內容，用於執行一個系統命令
+`command` 用于声明命令内容，用于执行一个系统命令
 
-## log 標籤
+## log 标签
 
 ```xml
 <log></log>
 ```
 
-用於列印一行日誌
+用于打印一行日志
