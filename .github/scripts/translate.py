@@ -34,14 +34,14 @@ def clean():
         if file_path.is_file():
             if docs_base_dir not in file_path.parents and file_path != docs_base_dir:
                 file_path.unlink()
-                print("remove", file_path.name)
+                print("remove", file_path.absolute())
 
     for dir_path in sorted(docs_dir.rglob("*"), reverse=True):
         if dir_path.is_dir():
             if docs_base_dir not in dir_path.parents and dir_path != docs_base_dir:
                 try:
                     dir_path.rmdir()
-                    print("remove", dir_path.name)
+                    print("remove", dir_path.absolute())
                 except:
                     pass
 
@@ -65,7 +65,7 @@ def translate_single_target(source_text: str, target: str, relative_path: pathli
     target_file_path = docs_dir / target / relative_path
     target_file_path.parent.mkdir(parents=True, exist_ok=True)
 
-    print("translate", target_file_path.name)
+    print("translate", target_file_path.absolute())
     translated_text = translate_text(source_text, target)
     target_file_path.write_text(translated_text, encoding="utf-8")
 
