@@ -10,12 +10,6 @@ import (
 	"text/template"
 )
 
-//go:embed template.sh
-var ShLauncher string
-
-//go:embed template.cmd
-var CmdLauncher string
-
 func Build() {
 	for _, target := range Targets {
 		dirName := target.Python.Arch + "-" + target.Python.OS
@@ -59,9 +53,9 @@ func Build() {
 		func() {
 			isWindows := strings.Contains(target.Python.OS, "windows")
 
-			content := ShLauncher
+			content := builder.ShLauncher
 			if isWindows {
-				content = CmdLauncher
+				content = builder.CmdLauncher
 			}
 
 			tpl, err := template.New("launcher").Parse(content)

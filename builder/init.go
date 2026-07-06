@@ -1,5 +1,7 @@
 package builder
 
+import _ "embed"
+
 var (
 	TempDir string = ".pybuild"
 	Python  string
@@ -17,3 +19,9 @@ var PythonConfig = struct {
 	Arch string `prop:"arch"`
 	OS   string `prop:"os"`
 }{}
+
+//go:embed template.sh
+var ShLauncher string
+
+//go:embed template.cmd
+var CmdLauncher string
