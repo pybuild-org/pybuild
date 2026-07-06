@@ -31,12 +31,12 @@ TRANSLATE_TARGET = [
 ]
 
 
-def translate_text(base: str, target: str) -> str:
-    developer_instruction = " ".join(
+def translate_text(source: str, target: str) -> str:
+    instruction = "\n".join(
         [
             "You are a professional translator.",
             f"Translate the incoming text directly into {target}.",
-            f"Maintain the original tone, formatting, and paragraphs.",
+            "Maintain the original tone, formatting, and paragraphs.",
             "Do not include any introductory or concluding remarks—return only the translated text.",
         ]
     )
@@ -45,8 +45,7 @@ def translate_text(base: str, target: str) -> str:
         model=AI_MODEL,  # type: ignore
         temperature=0.3,
         messages=[
-            {"role": "developer", "content": developer_instruction},
-            {"role": "user", "content": f"Text to translate:\n{base}"},
+            {"role": "user", "content": f"{instruction}\nText to translate:\n{source}"},
         ],
     )
 
