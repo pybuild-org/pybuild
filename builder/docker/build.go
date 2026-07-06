@@ -3,8 +3,11 @@ package docker
 import (
 	"fmt"
 	"log"
+	"os"
 	"path/filepath"
 	"pybuild/builder"
+	"strings"
+	"text/template"
 
 	"github.com/google/go-containerregistry/pkg/v1/mutate"
 )
@@ -55,11 +58,52 @@ func Build() {
 			}
 		}
 
-		image := useImage(
+		func() {
+			isWindows := strings.Contains(target.Python.OS, "windows")
+
+			content := builder.ShLauncher
+			if isWindows {
+				content = builder.CmdLauncher
+			}
+
+			tpl, err := template.New("launcher").Parse(content)
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			ext := ""
+			if isWindows {
+				ext = ".cmd"
+			}
+
+			p := filepath.Join(baseDir, builder.BuilderConfig.App+ext)
+			f, err := os.Create(p)
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			data := map[string]string{
+				"RUN": target.Launcher.Run,
+				"PYTHON": builder.MkPyBinPath(
+					target.Python.OS,
+					builder.BuilderConfig.Version,
+				),
+			}
+
+			defer f.Close()
+			if err := tpl.Execute(f, data); err != nil {
+				log.Fatalln(err)
+			}
+		}()
+
+		cacheDir := filepath.Join(builder.TempDir, "cache")
+		builder.CleanDir(cacheDir, false)
+
+		image := appendDir(useImage(
 			target.Image.Base,
 			target.Image.OS,
 			target.Image.Arch,
-		)
+		), baseDir, "app", cacheDir)
 
 		{
 			cfg, err := image.ConfigFile()
@@ -79,11 +123,8 @@ func Build() {
 			image = newImg
 		}
 
-		cacheDir := filepath.Join(builder.TempDir, "cache")
-		builder.CleanDir(cacheDir, false)
-
 		saveImage(
-			appendDir(image, baseDir, "app", cacheDir), imageName,
+			image, imageName,
 			filepath.Join(builder.BuilderConfig.Output, dirName+".tar"),
 		)
 
