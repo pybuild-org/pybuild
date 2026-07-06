@@ -81,7 +81,7 @@ def translate_text(source: str, target: str) -> str:
 
     response = client.chat.completions.create(
         model=AI_MODEL,  # type: ignore
-        temperature=0,
+        temperature=0.3,
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": source},
