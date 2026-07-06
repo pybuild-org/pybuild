@@ -38,7 +38,7 @@ def translate_text(base: str, target: str) -> str:
         temperature=0.3,
         messages=[
             {"role": "developer", "content": developer_instruction},
-            {"role": "user", "content": f"Text to translate:\n---\n{base}\n---"},
+            {"role": "user", "content": f"Text to translate:\n{base}"},
         ],
     )
 
