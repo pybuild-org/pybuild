@@ -1,4 +1,4 @@
-name: build pybuild
+name: release
 
 on:
     workflow_dispatch:
@@ -7,7 +7,7 @@ permissions:
     contents: write
 
 jobs:
-    build:
+    build_pybuild:
         runs-on: ubuntu-latest
         steps:
             - name: checkout
@@ -51,3 +51,14 @@ jobs:
 
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    translate_docs:
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout
+              uses: actions/checkout@main
+
+            - name: setup python
+              uses: actions/setup-python@main
+              with:
+                  python-version: '3.12'
