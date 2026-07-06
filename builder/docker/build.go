@@ -115,7 +115,7 @@ func Build() {
 			newCfg.Architecture = target.Image.Arch
 			newCfg.Config.Entrypoint = []string{"/app/launcher.sh"}
 			if isWindows {
-				newCfg.Config.Entrypoint = []string{"C:\\app\\launcher.sh"}
+				newCfg.Config.Entrypoint = []string{"C:\\app\\launcher.cmd"}
 			}
 
 			newImg, err := mutate.ConfigFile(image, newCfg)
