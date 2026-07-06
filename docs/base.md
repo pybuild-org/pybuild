@@ -8,7 +8,7 @@
 
 指定配置文件 `pybuild custom.xml`
 
-# Github Action 运行
+## Github Action 运行
 
 ```yaml
 - name: setup pybuild
