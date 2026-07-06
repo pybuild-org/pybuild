@@ -1,26 +1,19 @@
 import os
 import pathlib
-from openai import OpenAI
-from concurrent.futures import ThreadPoolExecutor
+import openai
+import concurrent.futures
 
 AI_API_KEY = os.getenv("AI_API_KEY")
 AI_API_URL = os.getenv("AI_API_URL")
 AI_MODEL = os.getenv("AI_MODEL")
 
-client = OpenAI(
+client = openai.OpenAI(
     api_key=AI_API_KEY,
     base_url=AI_API_URL,
 )
 
 docs_dir = pathlib.Path("docs")
-doc_base_name = "base.md"
-doc_base = docs_dir / doc_base_name
-doc_base_file = doc_base.read_text(encoding="UTF-8")
-
-for item in docs_dir.iterdir():
-    if item.is_file() and item.name != doc_base_name:
-        print("remove old", item.name)
-        item.unlink()
+docs_base_dir = docs_dir / "base"
 
 TRANSLATE_TARGET = [
     "zh-CN",
@@ -31,43 +24,72 @@ TRANSLATE_TARGET = [
 ]
 
 
+def main():
+    clean()
+    translate()
+
+
+def clean():
+    for file_path in docs_dir.rglob("*"):
+        if file_path.is_file():
+            if docs_base_dir not in file_path.parents and file_path != docs_base_dir:
+                file_path.unlink()
+
+    for dir_path in sorted(docs_dir.rglob("*"), reverse=True):
+        if dir_path.is_dir():
+            if docs_base_dir not in dir_path.parents and dir_path != docs_base_dir:
+                try:
+                    dir_path.rmdir()
+                except:
+                    pass
+
+
+def translate():
+    tasks: list[tuple[str, str, pathlib.Path]] = []
+    for file_path in docs_base_dir.rglob("*.md"):
+        if file_path.is_file():
+            source_text = file_path.read_text(encoding="utf-8")
+            relative_path = file_path.relative_to(docs_base_dir)
+
+            for target in TRANSLATE_TARGET:
+                tasks.append((source_text, target, relative_path))
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+        for source, target, rel_path in tasks:
+            executor.submit(translate_single_target, source, target, rel_path)
+
+
+def translate_single_target(source_text: str, target: str, relative_path: pathlib.Path):
+    target_file_path = docs_dir / target / relative_path
+    target_file_path.parent.mkdir(parents=True, exist_ok=True)
+
+    translated_text = translate_text(source_text, target)
+    target_file_path.write_text(translated_text, encoding="utf-8")
+
+
 def translate_text(source: str, target: str) -> str:
-    system = "\n".join(
+    system_prompt = "\n".join(
         [
-            "You are an expert, native-level professional translator.",
-            f"Your task is to accurately translate the provided Markdown text into {target}.",
-            "",
-            "[CRITICAL RULES]",
-            "1. Output ONLY the direct translation. Do NOT wrap the output in conversational text, and do NOT include any introductory or concluding remarks.",
-            "2. Preserve all original Markdown formatting, syntax, line breaks, HTML tags, and code blocks exactly as they are. Do not translate code or configuration keys.",
-            "3. Maintain the precise tone, style, and semantic meaning of the original text.",
-            "4. The source text to translate is enclosed inside the <source_text> and </source_text> XML tags. Do NOT translate the tags themselves, and do NOT output these tags in your response.",
+            "You are a professional, expert translator.",
+            f"Your task is to translate the user's input text into the target language: '{target}'.",
+            "Strictly follow these rules:",
+            "1. Maintain the exact original Markdown formatting (headers, lists, code blocks, links, bold, italic, etc.).",
+            "2. Do not translate code snippets, variable names, URLs, or technical terms that should remain intact.",
+            "3. Deliver ONLY the translated content. Do not include any explanations, greetings, or extra commentary.",
         ]
     )
 
     response = client.chat.completions.create(
         model=AI_MODEL,  # type: ignore
-        temperature=0.0,
+        temperature=0,
         messages=[
-            {"role": "system", "content": system},
-            {"role": "user", "content": f"<source_text>\n{source}\n</source_text>"},
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": source},
         ],
     )
 
-    content = response.choices[0].message.content
-    if not content:
-        return ""
-
-    return content.strip()
+    return response.choices[0].message.content  # type: ignore
 
 
-def process_translation(target: str):
-    print("translate to", target)
-    content = translate_text(doc_base_file, target)
-
-    target_file = docs_dir / (target + ".md")
-    target_file.write_text(content, encoding="UTF-8")
-
-
-with ThreadPoolExecutor(max_workers=3) as executor:
-    executor.map(process_translation, TRANSLATE_TARGET)
+if __name__ == "__main__":
+    main()
