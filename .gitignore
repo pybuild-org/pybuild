@@ -38,3 +38,6 @@ go.work.sum
 src/
 dist/
 .pybuild/
+
+# github workflow
+.venv/
