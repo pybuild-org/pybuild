@@ -32,20 +32,25 @@ TRANSLATE_TARGET = [
 
 
 def translate_text(source: str, target: str) -> str:
-    instruction = "\n".join(
+    system = "\n".join(
         [
-            "You are a professional translator.",
-            f"Translate the incoming text directly into {target}.",
-            "Maintain the original tone, formatting, and paragraphs.",
-            "Do not include any introductory or concluding remarks—return only the translated text.",
+            "You are an expert, native-level professional translator.",
+            f"Your task is to accurately translate the provided Markdown text into {target}.",
+            "",
+            "[CRITICAL RULES]",
+            "1. Output ONLY the direct translation. Do NOT wrap the output in conversational text, and do NOT include any introductory or concluding remarks.",
+            "2. Preserve all original Markdown formatting, syntax, line breaks, HTML tags, and code blocks exactly as they are. Do not translate code or configuration keys.",
+            "3. Maintain the precise tone, style, and semantic meaning of the original text.",
+            "4. The source text to translate is enclosed inside the <source_text> and </source_text> XML tags. Do NOT translate the tags themselves, and do NOT output these tags in your response.",
         ]
     )
 
     response = client.chat.completions.create(
         model=AI_MODEL,  # type: ignore
-        temperature=0.3,
+        temperature=0.2,
         messages=[
-            {"role": "user", "content": f"{instruction}\nText to translate:\n{source}"},
+            {"role": "system", "content": system},
+            {"role": "user", "content": f"<source_text>\n{source}\n</source_text>"},
         ],
     )
 
