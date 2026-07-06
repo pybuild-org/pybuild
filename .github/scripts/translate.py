@@ -1,7 +1,7 @@
 import os
 import pathlib
-
 from openai import OpenAI
+from concurrent.futures import ThreadPoolExecutor
 
 AI_API_KEY = os.getenv("AI_API_KEY")
 AI_API_URL = os.getenv("AI_API_URL")
@@ -32,7 +32,15 @@ TRANSLATE_TARGET = [
 
 
 def translate_text(base: str, target: str) -> str:
-    developer_instruction = f"You are a professional translator. " f"Translate the incoming text directly into {target}. " f"Maintain the original tone, formatting, and paragraphs. " f"Do not include any introductory or concluding remarks—return only the translated text."
+    developer_instruction = " ".join(
+        [
+            "You are a professional translator.",
+            f"Translate the incoming text directly into {target}.",
+            f"Maintain the original tone, formatting, and paragraphs.",
+            "Do not include any introductory or concluding remarks—return only the translated text.",
+        ]
+    )
+
     response = client.chat.completions.create(
         model=AI_MODEL,  # type: ignore
         temperature=0.3,
@@ -49,9 +57,13 @@ def translate_text(base: str, target: str) -> str:
     return content.strip()
 
 
-for target in TRANSLATE_TARGET:
+def process_translation(target: str):
     print("translate to", target)
     content = translate_text(doc_base_file, target)
 
     target_file = docs_dir / (target + ".md")
     target_file.write_text(content, encoding="UTF-8")
+
+
+with ThreadPoolExecutor(max_workers=3) as executor:
+    executor.map(process_translation, TRANSLATE_TARGET)
