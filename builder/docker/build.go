@@ -20,6 +20,7 @@ func Build() {
 	)
 
 	for _, target := range Targets {
+		isWindows := strings.Contains(target.Python.OS, "windows")
 		dirName := target.Python.Arch + "-" + target.Python.OS + "-docker-image"
 		baseDir := filepath.Join(builder.TempDir, dirName)
 		builder.CleanDir(baseDir, false)
@@ -59,8 +60,6 @@ func Build() {
 		}
 
 		func() {
-			isWindows := strings.Contains(target.Python.OS, "windows")
-
 			content := builder.ShLauncher
 			if isWindows {
 				content = builder.CmdLauncher
@@ -71,12 +70,12 @@ func Build() {
 				log.Fatalln(err)
 			}
 
-			ext := ""
+			ext := ".sh"
 			if isWindows {
 				ext = ".cmd"
 			}
 
-			p := filepath.Join(baseDir, builder.BuilderConfig.App+ext)
+			p := filepath.Join(baseDir, "launcher"+ext)
 			f, err := os.Create(p)
 			if err != nil {
 				log.Fatalln(err)
@@ -114,6 +113,10 @@ func Build() {
 			newCfg := cfg.DeepCopy()
 			newCfg.OS = target.Image.OS
 			newCfg.Architecture = target.Image.Arch
+			newCfg.Config.Entrypoint = []string{"/app/launcher.sh"}
+			if isWindows {
+				newCfg.Config.Entrypoint = []string{"C:\\app\\launcher.sh"}
+			}
 
 			newImg, err := mutate.ConfigFile(image, newCfg)
 			if err != nil {
