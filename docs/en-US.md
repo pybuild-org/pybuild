@@ -1,14 +1,14 @@
-#Usage
+# Usage
 
-## Local Execution
+## Local Run
 
-Download the precompiled binary from https://github.com/pybuild-org/pybuild/releases
+Download precompiled binaries from https://github.com/pybuild-org/pybuild/releases
 
 Run `pybuild` to start compiling `target.xml`
 
 Specify configuration file `pybuild custom.xml`
 
-## GitHub Action Execution
+## Github Action Run
 
 ```yaml
 - name: setup pybuild
@@ -19,7 +19,7 @@ Specify configuration file `pybuild custom.xml`
       goarch: 'amd64' # default
 ```
 
-Then the `pybuild` command is available in subsequent tasks.
+Then the `pybuild` command is available in subsequent jobs
 
 # Tag Usage
 
@@ -29,7 +29,7 @@ Then the `pybuild` command is available in subsequent tasks.
 <xml></xml>
 ```
 
-A useless placeholder that does not occupy the stack; it can be written any number of times, at any depth.
+A useless placeholder, does not occupy stack, can be written any number of times, any number of layers
 
 ## use tag
 
@@ -37,11 +37,11 @@ A useless placeholder that does not occupy the stack; it can be written any numb
 <use file="" />
 ```
 
-Imports an external XML snippet and immediately executes it in the current context.
+Introduce a piece of external XML content and execute it immediately in the current context
 
-The `file` parameter can be a file path or a URL starting with http(s)://.
+The `file` parameter can be a file path, or a link starting with `http(s)://`
 
-If the `.xml` suffix is omitted, the `use` tag will automatically add it.
+If the `.xml` suffix is not added, the `use` tag will automatically add it
 
 ## config tag
 
@@ -49,9 +49,9 @@ If the `.xml` suffix is omitted, the `use` tag will automatically add it.
 <config [type="group"] name=""><config>
 ```
 
-Used to declare a configuration; `name` declares the configuration name.
+Tag used to declare configuration, `name` is used to declare configuration name
 
-`type="group"` is optional, used to declare a group configuration; in this case, the `config` tag is declared collectively by several child `config` tags.
+`type="group"` is optional, used to declare a group configuration, in which case this `config` tag is declared together by several child `config` tags
 
 ## prop tag
 
@@ -59,7 +59,7 @@ Used to declare a configuration; `name` declares the configuration name.
 <prop name="" value="" />
 ```
 
-Used to declare a specific configuration value; `name` declares the field name, `value` declares the field value.
+Tag used to declare specific values of configuration items, `name` is used to declare field name, `value` is used to declare field value
 
 ## run tag
 
@@ -67,11 +67,11 @@ Used to declare a specific configuration value; `name` declares the field name, 
 <run job="" | command="" />
 ```
 
-Used to execute a task; `job` and `command` are mutually exclusive.
+Tag used to execute a task, `job` and `command` are mutually exclusive
 
-`job` declares the task name, used to execute a pre-configured task.
+`job` is used to declare task name, used to execute a pre-configured task
 
-`command` declares the command content, used to execute a system command.
+`command` is used to declare command content, used to execute a system command
 
 ## log tag
 
@@ -79,4 +79,4 @@ Used to execute a task; `job` and `command` are mutually exclusive.
 <log></log>
 ```
 
-Used to print a line of log.
+Used to print a line of log
