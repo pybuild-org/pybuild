@@ -2,12 +2,11 @@ package docker
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"os"
 	"path/filepath"
 	"pybuild/builder"
-	"strings"
-	"text/template"
 
 	"github.com/google/go-containerregistry/pkg/v1/mutate"
 )
@@ -20,7 +19,6 @@ func Build() {
 	)
 
 	for _, target := range Targets {
-		isWindows := strings.Contains(target.Python.OS, "windows")
 		dirName := target.Python.Arch + "-" + target.Python.OS + "-docker-image"
 		baseDir := filepath.Join(builder.TempDir, dirName)
 		builder.CleanDir(baseDir, false)
@@ -61,21 +59,12 @@ func Build() {
 
 		func() {
 			content := builder.ShLauncher
-			if isWindows {
-				content = builder.CmdLauncher
-			}
-
 			tpl, err := template.New("launcher").Parse(content)
 			if err != nil {
 				log.Fatalln(err)
 			}
 
-			ext := ".sh"
-			if isWindows {
-				ext = ".cmd"
-			}
-
-			p := filepath.Join(baseDir, "launcher"+ext)
+			p := filepath.Join(baseDir, "launcher.sh")
 			f, err := os.Create(p)
 			if err != nil {
 				log.Fatalln(err)
@@ -100,8 +89,7 @@ func Build() {
 
 		image := appendDir(useImage(
 			target.Image.Base,
-			target.Image.OS,
-			target.Image.Arch,
+			"linux", target.Image.Arch,
 		), baseDir, "app", cacheDir)
 
 		{
@@ -111,13 +99,10 @@ func Build() {
 			}
 
 			newCfg := cfg.DeepCopy()
-			newCfg.OS = target.Image.OS
+			newCfg.OS = "linux"
 			newCfg.Architecture = target.Image.Arch
-			newCfg.Config.Cmd = nil
 			newCfg.Config.Entrypoint = []string{"/bin/sh", "/app/launcher.sh"}
-			if isWindows {
-				newCfg.Config.Entrypoint = []string{"C:\\app\\launcher.cmd"}
-			}
+			newCfg.Config.Cmd = nil
 
 			newImg, err := mutate.ConfigFile(image, newCfg)
 			if err != nil {

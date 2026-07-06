@@ -8,7 +8,6 @@ var Targets = []*struct {
 	Image struct {
 		Base string `prop:"base"`
 		Arch string `prop:"arch"`
-		OS   string `prop:"os"`
 	} `prop:"image"`
 
 	Python struct {
