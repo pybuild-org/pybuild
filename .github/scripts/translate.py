@@ -19,6 +19,7 @@ doc_base_file = doc_base.read_text(encoding="UTF-8")
 
 for item in docs_dir.iterdir():
     if item.is_file() and item.name != doc_base_name:
+        print("remove old", item.name)
         item.unlink()
 
 TRANSLATE_TARGET = [
