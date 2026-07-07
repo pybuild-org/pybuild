@@ -40,3 +40,5 @@
 `os` 是本地 python 解释器运行系统
 
 `arch` 和 `os` 参照 https://github.com/astral-sh/python-build-standalone/releases 编写
+
+[standalone 构建器配置](./standalone.md)
