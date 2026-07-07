@@ -1,6 +1,6 @@
 # standalone 構建器配置
 
-standalone 構建器可以構建出獨立的可執行檔案，支援多架構、跨平台，以 zip 壓縮包格式產出產物
+standalone 構建器可以構建出獨立的可執行檔案，支援多架構、跨平台，以 zip 壓縮包格式生成產物
 
 standalone 構建器依賴 builder 配置和本地 python 配置
 
@@ -34,4 +34,4 @@ standalone 構建器依賴 builder 配置和本地 python 配置
 
 `pip.download` 用於聲明專案依賴，如果有多個依賴，則需編寫多個 `pip.download`
 
-`launcher.run` 是專案入口點，可以是一個具體的 python 腳本檔案或一個模組（如 `-m http.server`）
+`launcher.run` 是專案入口點，可以是一個具體的 python 腳本檔案或一個模組 (如 `-m http.server`)

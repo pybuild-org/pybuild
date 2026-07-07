@@ -1,4 +1,4 @@
-# ローカルでの使用
+# ローカルで使用
 
 https://github.com/pybuild-org/pybuild/releases から事前にコンパイルされたバイナリファイルをダウンロードします
 

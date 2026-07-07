@@ -22,9 +22,9 @@
 
 `release` — версия сборки интерпретатора Python  
 
-`version` и `release` указываются согласно https://github.com/astral-sh/python-build-standalone/releases
+`version` и `release` оформляются согласно https://github.com/astral-sh/python-build-standalone/releases  
 
-# Локальная конфигурация Python
+# Локальная конфигурация python
 
 ```xml
 <config name="python">
@@ -35,11 +35,11 @@
 <run job="setup python" />
 ```
 
-`arch` — архитектура локального интерпретатора Python  
+`arch` — архитектура, на которой работает локальный интерпретатор Python  
 
-`os` — операционная система локального интерпретатора Python  
+`os` — операционная система, на которой работает локальный интерпретатор Python  
 
-`arch` и `os` указываются согласно https://github.com/astral-sh/python-build-standalone/releases
+`arch` и `os` оформляются согласно https://github.com/astral-sh/python-build-standalone/releases  
 
 [Конфигурация standalone‑строителя](./standalone.md)
 

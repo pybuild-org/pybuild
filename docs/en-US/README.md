@@ -1,4 +1,4 @@
-# Local Usage
+# Local Use
 
 Download the precompiled binaries from https://github.com/pybuild-org/pybuild/releases
 
@@ -6,7 +6,7 @@ Running `pybuild` uses `target.xml` as the build script by default
 
 Use `pybuild custom.xml` to specify a custom build script
 
-When using a custom build script, the `.xml` suffix can be omitted
+When using a custom build script, the `.xml` suffix may be omitted
 
 # Using in Github Action
 

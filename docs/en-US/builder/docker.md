@@ -1,8 +1,8 @@
 # Docker Builder Configuration
 
-The Docker builder can produce a tar file that conforms to the Docker image format without requiring the Docker CLI on the system. It supports multiple architectures, and the build target is limited to the Linux platform.
+The Docker builder can produce tar files that conform to the Docker image format without requiring the Docker CLI on the system, supports multiple architectures, and the build target only supports the Linux platform.
 
-The Docker builder depends on the builder configuration and the local Python configuration.
+The Docker builder depends on builder configuration and local Python configuration.
 
 ```xml
 <config name="docker image meta">
@@ -10,7 +10,7 @@ The Docker builder depends on the builder configuration and the local Python con
 </config>
 ```
 
-`tag` is the Docker image tag.
+`tag` is the Docker image tag
 
 ```xml
 <config type="group" name="docker image targets">
@@ -34,17 +34,20 @@ The Docker builder depends on the builder configuration and the local Python con
 <run job="docker build" />
 ```
 
-If you need to build multiple targets, the `docker image targets` section must be written multiple times.
+If you need to build multiple targets, the `docker image targets` configuration should be written multiple times.
 
-- `image.base` is the base image for the Docker image.
-- `image.arch` is the runtime architecture of the Docker image.
-- `python.arch` is the architecture of the target Python interpreter.
-- `python.os` is the operating system of the target Python interpreter.
+`image.base` is the base image of the Docker image.
 
-`python.arch` and `python.os` should be specified according to the releases at https://github.com/astral-sh/python-build-standalone/releases.
+`image.arch` is the runtime architecture of the Docker image.
 
-`pip.platform` should follow the specifications at https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#platform-tag.
+`python.arch` is the target Python interpreter's architecture.
 
-`pip.download` declares project dependencies; if there are multiple dependencies, multiple `pip.download` entries are required.
+`python.os` is the target Python interpreter's operating system.
 
-`launcher.run` is the project entry point and can be a specific Python script file or a module (e.g., `-m http.server`).
+`python.arch` and `python.os` should be written according to https://github.com/astral-sh/python-build-standalone/releases.
+
+`pip.platform` should be written referencing https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#platform-tag.
+
+`pip.download` is used to declare project dependencies; if there are multiple dependencies, multiple `pip.download` entries should be written.
+
+`launcher.run` is the project entry point, which can be a specific Python script file or a module (e.g., `-m http.server`).

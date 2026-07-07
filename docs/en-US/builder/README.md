@@ -1,4 +1,4 @@
-# builder configuration
+# Builder Configuration
 
 ```xml
 <config name="builder">
@@ -12,19 +12,19 @@
 <run job="setup builder" />
 ```
 
-`app` is the application name
+`app` is the application name  
 
-`source` is the source code directory, which will be fully retained in the build artifacts
+`source` is the source code directory; this directory will be fully retained in the build artifacts  
 
-`output` is the output directory for the build artifacts
+`output` is the output directory for build artifacts  
 
-`version` is the Python interpreter version
+`version` is the Python interpreter version  
 
-`release` is the Python interpreter build version
+`release` is the Python interpreter build version  
 
-`version` and `release` should be written according to https://github.com/astral-sh/python-build-standalone/releases
+`version` and `release` should be written according to https://github.com/astral-sh/python-build-standalone/releases  
 
-# Local python configuration
+# Local Python Configuration
 
 ```xml
 <config name="python">
@@ -35,12 +35,12 @@
 <run job="setup python" />
 ```
 
-`arch` is the architecture of the local Python interpreter
+`arch` is the architecture of the local Python interpreter  
 
-`os` is the operating system of the local Python interpreter
+`os` is the operating system of the local Python interpreter  
 
-`arch` and `os` should be written according to https://github.com/astral-sh/python-build-standalone/releases
+`arch` and `os` should be written according to https://github.com/astral-sh/python-build-standalone/releases  
 
-[standalone builder configuration](./standalone.md)
+[Standalone Builder Configuration](./standalone.md)
 
-[docker builder configuration](./docker.md)
+[Docker Builder Configuration](./docker.md)

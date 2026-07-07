@@ -12,19 +12,19 @@
 <run job="setup builder" />
 ```
 
-`app` はアプリケーション名です
+`app` はアプリケーション名です  
 
-`source` はソースコードディレクトリで、このディレクトリはビルド成果物に完全に保持されます
+`source` はソースコードディレクトリで、このディレクトリはビルド成果物に完全に保持されます  
 
-`output` はビルド成果物の出力ディレクトリです
+`output` はビルド成果物の出力ディレクトリです  
 
-`version` は Python インタプリタのバージョンです
+`version` は Python インタプリタのバージョンです  
 
-`release` は Python インタプリタのビルドバージョンです
+`release` は Python インタプリタのビルドバージョンです  
 
-`version` と `release` は https://github.com/astral-sh/python-build-standalone/releases を参照して記述してください
+`version` と `release` は https://github.com/astral-sh/python-build-standalone/releases を参照して記述してください  
 
-# ローカル Python 設定
+# ローカル python 設定
 
 ```xml
 <config name="python">
@@ -35,11 +35,11 @@
 <run job="setup python" />
 ```
 
-`arch` はローカル Python インタプリタの実行アーキテクチャです
+`arch` はローカル Python インタプリタの実行アーキテクチャです  
 
-`os` はローカル Python インタプリタの実行システムです
+`os` はローカル Python インタプリタの実行システムです  
 
-`arch` と `os` は https://github.com/astral-sh/python-build-standalone/releases を参照して記述してください
+`arch` と `os` は https://github.com/astral-sh/python-build-standalone/releases を参照して記述してください  
 
 [standalone ビルダー設定](./standalone.md)
 

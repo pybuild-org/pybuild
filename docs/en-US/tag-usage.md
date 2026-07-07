@@ -4,7 +4,7 @@
 <xml></xml>
 ```
 
-A placeholder with no purpose, does not occupy the stack, can be written any number of times, any number of layers.
+A placeholder with no effect, does not occupy the stack, and can be written any number of times and at any depth.
 
 # use tag
 
@@ -12,9 +12,9 @@ A placeholder with no purpose, does not occupy the stack, can be written any num
 <use file="" />
 ```
 
-Introduces an external XML content and executes it immediately in the current context.
+Imports an external XML snippet and executes it immediately in the current context.
 
-The `file` parameter can be a file path or a link starting with `http(s)://`.
+The `file` attribute can be a file path or a URL that starts with `http(s)://`.
 
 If the `.xml` suffix is omitted, the `use` tag will automatically add it.
 
@@ -24,9 +24,9 @@ If the `.xml` suffix is omitted, the `use` tag will automatically add it.
 <config [type="group"] name=""><config>
 ```
 
-Tag used to declare a configuration; `name` declares the configuration name.
+Declares a configuration tag; `name` specifies the configuration name.
 
-`type="group"` is optional, used to declare a group configuration; in this case the `config` tag is declared together with several child `config` tags.
+`type="group"` is optional and indicates a group configuration, in which case this `config` tag is defined together with several child `config` tags.
 
 # prop tag
 
@@ -34,7 +34,7 @@ Tag used to declare a configuration; `name` declares the configuration name.
 <prop name="" value="" />
 ```
 
-Tag used to declare the specific value of a configuration item; `name` declares the field name, `value` declares the field value.
+Declares a specific configuration item; `name` specifies the field name, and `value` specifies the field value.
 
 # run tag
 
@@ -42,11 +42,11 @@ Tag used to declare the specific value of a configuration item; `name` declares 
 <run job="" | command="" />
 ```
 
-Tag used to execute a task; `job` and `command` are mutually exclusive.
+Executes a task; choose either `job` or `command`.
 
-`job` declares the task name to execute a predefined task.
+`job` specifies the name of a predefined task to run.
 
-`command` declares the command content to execute a system command.
+`command` specifies the command content to execute as a system command.
 
 # log tag
 
@@ -54,6 +54,6 @@ Tag used to execute a task; `job` and `command` are mutually exclusive.
 <log></log>
 ```
 
-Tag used to print a line of log.
+Prints a single line of log output.
 
 Next, see: [Builder Configuration](./builder)

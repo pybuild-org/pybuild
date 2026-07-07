@@ -34,7 +34,7 @@ Docker‑строитель зависит от конфигурации builder
 <run job="docker build" />
 ```
 
-Если необходимо собрать несколько целей, то `docker image targets` следует указать несколько раз.
+Если необходимо собрать несколько целей, то `docker image targets` следует объявлять несколько раз.
 
 `image.base` — базовый образ Docker‑image.
 
@@ -44,10 +44,10 @@ Docker‑строитель зависит от конфигурации builder
 
 `python.os` — операционная система целевого интерпретатора Python.
 
-`python.arch` и `python.os` следует указывать согласно <https://github.com/astral-sh/python-build-standalone/releases>.
+`python.arch` и `python.os` следует указывать в соответствии с https://github.com/astral-sh/python-build-standalone/releases.
 
-`pip.platform` следует указывать согласно <https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#platform-tag>.
+`pip.platform` следует указывать согласно https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#platform-tag.
 
-`pip.download` используется для указания зависимостей проекта; если зависимостей несколько, необходимо добавить несколько `pip.download`.
+`pip.download` используется для указания зависимостей проекта; если зависимостей несколько, необходимо добавить несколько элементов `pip.download`.
 
 `launcher.run` — точка входа проекта; может быть конкретным файлом скрипта Python или модулем (например, `-m http.server`).
