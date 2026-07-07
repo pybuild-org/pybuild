@@ -12,19 +12,19 @@
 <run job="setup builder" />
 ```
 
-`app` 是應用程式名稱  
+`app` 是應用程式名稱
 
-`source` 是原始碼目錄，這個目錄會在建構產物中完整保留  
+`source` 是原始碼目錄，這個目錄會在建置產物中完整保留
 
-`output` 是建構產物輸出目錄  
+`output` 是建置產物輸出目錄
 
-`version` 是 python 直譯器版本  
+`version` 是 python 直譯器版本
 
-`release` 是 python 直譯器建構版本  
+`release` 是 python 直譯器建置版本
 
-`version` 和 `release` 參照 https://github.com/astral-sh/python-build-standalone/releases 編寫  
+`version` 和 `release` 參照 https://github.com/astral-sh/python-build-standalone/releases 編寫
 
-# 本機 python 配置
+# 本地 python 配置
 
 ```xml
 <config name="python">
@@ -35,12 +35,12 @@
 <run job="setup python" />
 ```
 
-`arch` 是本機 python 直譯器執行架構  
+`arch` 是本地 python 直譯器執行架構
 
-`os` 是本機 python 直譯器執行系統  
+`os` 是本地 python 直譯器執行系統
 
-`arch` 和 `os` 參照 https://github.com/astral-sh/python-build-standalone/releases 編寫  
+`arch` 和 `os` 參照 https://github.com/astral-sh/python-build-standalone/releases 編寫
 
-[standalone 建構器配置](./standalone.md)
+[standalone 構建器配置](./standalone.md)
 
-[docker 建構器配置](./docker.md)
+[docker 構建器配置](./docker.md)

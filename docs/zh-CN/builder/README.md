@@ -1,4 +1,4 @@
-# 构建器 配置
+# builder 配置
 
 ```xml
 <config name="builder">
@@ -24,7 +24,7 @@
 
 `version` 和 `release` 参照 https://github.com/astral-sh/python-build-standalone/releases 编写
 
-# 本地 Python 配置
+# 本地 python 配置
 
 ```xml
 <config name="python">

@@ -6,7 +6,9 @@ Running `pybuild` uses `target.xml` as the build script by default
 
 Use `pybuild custom.xml` to specify a custom build script
 
-# Using in GitHub Action
+When using a custom build script, the `.xml` suffix can be omitted
+
+# Using in Github Action
 
 ```yaml
 - name: setup pybuild
@@ -17,6 +19,6 @@ Use `pybuild custom.xml` to specify a custom build script
       goarch: 'amd64' # default
 ```
 
-Then the `pybuild` command (on Windows it's `pybuild.exe`) is available in subsequent steps
+Then the `pybuild` (on Windows it’s `pybuild.exe`) command is available in subsequent steps
 
 Next, see: [Tag Usage](./tag-usage.md)

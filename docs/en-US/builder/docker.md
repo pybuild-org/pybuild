@@ -47,4 +47,4 @@ If you need to build multiple targets, the `docker image targets` section must b
 
 `pip.download` declares project dependencies; if there are multiple dependencies, multiple `pip.download` entries are required.
 
-`launcher.run` is the entry point of the project and can be a specific Python script file or a module (e.g., `-m http.server`).
+`launcher.run` is the project entry point and can be a specific Python script file or a module (e.g., `-m http.server`).

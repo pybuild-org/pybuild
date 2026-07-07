@@ -1,6 +1,6 @@
-# standalone builder configuration
+# Standalone Builder Configuration
 
-The standalone builder can produce a self‑contained executable, supports multiple architectures and cross‑platform, and generates artifacts in a zip archive format.
+The standalone builder can produce independent executable files, supporting multiple architectures and cross‑platform builds, and generates artifacts in a zip archive format.
 
 The standalone builder depends on the builder configuration and the local Python configuration.
 
@@ -22,16 +22,16 @@ The standalone builder depends on the builder configuration and the local Python
 <run job="build standalone" />
 ```
 
-If you need to build multiple targets, the `standalone targets` section must be written multiple times.
+If you need to build multiple targets, the `standalone targets` configuration must be written multiple times.
 
 `python.arch` is the architecture on which the target Python interpreter runs.
 
 `python.os` is the operating system on which the target Python interpreter runs.
 
-Write `python.arch` and `python.os` according to https://github.com/astral-sh/python-build-standalone/releases.
+Write `python.arch` and `python.os` according to the information on https://github.com/astral-sh/python-build-standalone/releases.
 
-Write `pip.platform` according to https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#platform-tag.
+`pip.platform` should be written based on https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#platform-tag.
 
-`pip.download` is used to declare project dependencies; if there are multiple dependencies, multiple `pip.download` entries must be written.
+`pip.download` is used to declare project dependencies; if there are multiple dependencies, write multiple `pip.download` entries.
 
-`launcher.run` is the project entry point; it can be a specific Python script file or a module (e.g., `-m http.server`).
+`launcher.run` is the project entry point and can be a specific Python script file or a module (e.g., `-m http.server`).

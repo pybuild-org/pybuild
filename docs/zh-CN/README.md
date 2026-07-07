@@ -6,6 +6,8 @@
 
 通过 `pybuild custom.xml` 自定义构建脚本
 
+使用自定义构建脚本时，`.xml` 后缀允许省略
+
 # 在 Github Action 中使用
 
 ```yaml
