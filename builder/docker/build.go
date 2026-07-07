@@ -2,11 +2,11 @@ package docker
 
 import (
 	"fmt"
-	"html/template"
 	"log"
 	"os"
 	"path/filepath"
 	"pybuild/builder"
+	"text/template"
 
 	"github.com/google/go-containerregistry/pkg/v1/mutate"
 )
