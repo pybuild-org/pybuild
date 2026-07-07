@@ -1,11 +1,23 @@
-# standalone 构建器配置
+# docker 构建器配置
 
-standalone 构建器可以构建出独立的可执行文件，支持多架构、跨平台，以 zip 压缩包格式生成产物
+docker 构建器可以构建出符合 docker image 格式的 tar 文件，而无需系统上有 docker cli，支持多架构，构建目标仅支持 linux 平台
 
-standalone 构建器依赖 builder 配置和本地 python 配置
+docker 构建器依赖 builder 配置和本地 python 配置
 
 ```xml
-<config type="group" name="standalone targets">
+<config name="docker image meta">
+    <prop name="tag" value="" />
+</config>
+```
+
+`tag` 是 docker image 的标签
+
+```xml
+<config type="group" name="docker image targets">
+    <config name="image">
+        <prop name="base" value="" />
+        <prop name="arch" value="" />
+    </config>
     <config name="python">
         <prop name="arch" value="" />
         <prop name="os" value="" />
@@ -19,10 +31,14 @@ standalone 构建器依赖 builder 配置和本地 python 配置
     </config>
 </config>
 
-<run job="build standalone" />
+<run job="docker build" />
 ```
 
-如果需要构建多个目标，则 `standalone targets` 需要编写多次
+如果需要构建多个目标，则 `docker image targets` 需要编写多次
+
+`image.base` 是 docker image 的底层镜像
+
+`image.arch` 是 docker image 的运行架构
 
 `python.arch` 是目标 python 解释器运行架构
 

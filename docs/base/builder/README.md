@@ -42,3 +42,5 @@
 `arch` 和 `os` 参照 https://github.com/astral-sh/python-build-standalone/releases 编写
 
 [standalone 构建器配置](./standalone.md)
+
+[docker 构建器配置](./docker.md)
