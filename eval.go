@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"pybuild/funcjob"
 	"pybuild/strprop"
+	"pybuild/strtpl"
 	"strings"
 )
 
@@ -21,10 +22,18 @@ func onTagOpen() {
 	case "xml":
 		i.PopStack()
 
+	case "define":
+		i.PopStack()
+
+		strtpl.Define(
+			n.Attrs["name"],
+			n.Attrs["value"],
+		)
+
 	case "use":
 		i.PopStack()
 
-		src := n.Attrs["src"]
+		src := strtpl.Parse(n.Attrs["src"])
 		if !strings.HasSuffix(src, ".xml") {
 			src += ".xml"
 		}
