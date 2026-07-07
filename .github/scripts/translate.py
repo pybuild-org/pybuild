@@ -1,5 +1,6 @@
 import os
 import pathlib
+import time
 import openai
 
 AI_API_KEY = os.getenv("AI_API_KEY")
@@ -56,9 +57,15 @@ def translate():
                 target_file_path = docs_dir / target / relative_path
                 target_file_path.parent.mkdir(parents=True, exist_ok=True)
 
-                print("translate", target_file_path.absolute())
-                translated_text = translate_text(source_text, target)
-                target_file_path.write_text(translated_text, encoding="utf-8")
+                while True:
+                    try:
+                        print("translate", target_file_path.absolute())
+                        translated_text = translate_text(source_text, target)
+                        target_file_path.write_text(translated_text, encoding="utf-8")
+                        break
+
+                    except:
+                        time.sleep(0.5)
 
 
 def translate_text(source: str, target: str) -> str:
