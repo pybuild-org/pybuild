@@ -1,0 +1,37 @@
+# standalone builder configuration
+
+The standalone builder can produce a self‑contained executable, supports multiple architectures and cross‑platform, and generates artifacts in a zip archive format.
+
+The standalone builder depends on the builder configuration and the local Python configuration.
+
+```xml
+<config type="group" name="standalone targets">
+    <config name="python">
+        <prop name="arch" value="" />
+        <prop name="os" value="" />
+    </config>
+    <config name="pip">
+        <prop name="platform" value="" />
+        <prop name="download" value="" />
+    </config>
+    <config name="launcher">
+        <prop name="run" value="" />
+    </config>
+</config>
+
+<run job="build standalone" />
+```
+
+If you need to build multiple targets, the `standalone targets` section must be written multiple times.
+
+`python.arch` is the architecture on which the target Python interpreter runs.
+
+`python.os` is the operating system on which the target Python interpreter runs.
+
+Write `python.arch` and `python.os` according to https://github.com/astral-sh/python-build-standalone/releases.
+
+Write `pip.platform` according to https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#platform-tag.
+
+`pip.download` is used to declare project dependencies; if there are multiple dependencies, multiple `pip.download` entries must be written.
+
+`launcher.run` is the project entry point; it can be a specific Python script file or a module (e.g., `-m http.server`).

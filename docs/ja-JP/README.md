@@ -1,0 +1,22 @@
+# ローカルでの使用
+
+https://github.com/pybuild-org/pybuild/releases で事前コンパイルされたバイナリをダウンロード
+
+`pybuild` を実行するとデフォルトで `target.xml` をビルドスクリプトとして使用
+
+`pybuild custom.xml` でビルドスクリプトをカスタマイズ
+
+# Github Action での使用
+
+```yaml
+- name: setup pybuild
+  uses: pybuild-org/pybuild@main
+  with: # optional
+      version: 'latest' # default
+      goos: 'linux' # default
+      goarch: 'amd64' # default
+```
+
+その後、`pybuild`（Windows では `pybuild.exe`）コマンドは以降のジョブで使用可能
+
+続いては、[タグの使用](./tag-usage.md) を参照
