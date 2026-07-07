@@ -1,12 +1,12 @@
-# ローカルで使用
+# ローカルでの使用
 
-https://github.com/pybuild-org/pybuild/releases から事前にコンパイルされたバイナリファイルをダウンロードします
+https://github.com/pybuild-org/pybuild/releases から事前コンパイルされたバイナリファイルをダウンロードします
 
 `pybuild` を実行すると、デフォルトで `target.xml` がビルドスクリプトとして使用されます
 
-`pybuild custom.xml` でビルドスクリプトをカスタマイズします
+`pybuild custom.xml` でカスタムビルドスクリプトを使用します
 
-カスタムビルドスクリプトを使用する場合、`.xml` 拡張子は省略可能です
+カスタムビルドスクリプトを使用する際、`.xml` 拡張子は省略可能です
 
 # Github Action での使用
 

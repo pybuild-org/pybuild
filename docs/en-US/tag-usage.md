@@ -1,59 +1,69 @@
-# xml tag
+# xml Tag
 
 ```xml
 <xml></xml>
 ```
 
-A placeholder with no effect, does not occupy the stack, and can be written any number of times and at any depth.
+A placeholder with no purpose, does not occupy the stack, can be written any number of times and any number of layers.
 
-# use tag
+# define Tag
 
 ```xml
-<use file="" />
+<define name="" value="" />
 ```
 
-Imports an external XML snippet and executes it immediately in the current context.
+Tag used to define value aliases; `name` declares the alias name, `value` declares the value.
 
-The `file` attribute can be a file path or a URL that starts with `http(s)://`.
+# use Tag
+
+```xml
+<use src="" />
+```
+
+Imports an external XML content and executes it immediately in the current context.
+
+`src` parameter can be a file path or a link starting with `http(s)://`.
+
+`src` parameter can use a value alias defined by the define tag via `{name}`.
 
 If the `.xml` suffix is omitted, the `use` tag will automatically add it.
 
-# config tag
+# config Tag
 
 ```xml
 <config [type="group"] name=""><config>
 ```
 
-Declares a configuration tag; `name` specifies the configuration name.
+Tag used to declare a configuration; `name` declares the configuration name.
 
-`type="group"` is optional and indicates a group configuration, in which case this `config` tag is defined together with several child `config` tags.
+`type="group"` is optional and declares a group configuration, in which case this `config` tag is composed of several child `config` tags.
 
-# prop tag
+# prop Tag
 
 ```xml
 <prop name="" value="" />
 ```
 
-Declares a specific configuration item; `name` specifies the field name, and `value` specifies the field value.
+Tag used to declare a specific configuration item value; `name` declares the field name, `value` declares the field value.
 
-# run tag
+# run Tag
 
 ```xml
 <run job="" | command="" />
 ```
 
-Executes a task; choose either `job` or `command`.
+Tag used to execute a task; choose either `job` or `command`.
 
-`job` specifies the name of a predefined task to run.
+`job` declares the task name to execute a predefined task.
 
-`command` specifies the command content to execute as a system command.
+`command` declares the command content to execute a system command.
 
-# log tag
+# log Tag
 
 ```xml
 <log></log>
 ```
 
-Prints a single line of log output.
+Tag used to print a line of log.
 
 Next, see: [Builder Configuration](./builder)

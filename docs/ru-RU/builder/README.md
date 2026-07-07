@@ -12,7 +12,7 @@
 <run job="setup builder" />
 ```
 
-`app` — название приложения  
+`app` — имя приложения  
 
 `source` — каталог исходного кода, этот каталог будет полностью сохранён в артефактах сборки  
 
@@ -22,9 +22,9 @@
 
 `release` — версия сборки интерпретатора Python  
 
-`version` и `release` оформляются согласно https://github.com/astral-sh/python-build-standalone/releases  
+`version` и `release` указываются согласно https://github.com/astral-sh/python-build-standalone/releases
 
-# Локальная конфигурация python
+# Локальная конфигурация Python
 
 ```xml
 <config name="python">
@@ -35,12 +35,12 @@
 <run job="setup python" />
 ```
 
-`arch` — архитектура, на которой работает локальный интерпретатор Python  
+`arch` — архитектура локального интерпретатора Python  
 
-`os` — операционная система, на которой работает локальный интерпретатор Python  
+`os` — операционная система локального интерпретатора Python  
 
-`arch` и `os` оформляются согласно https://github.com/astral-sh/python-build-standalone/releases  
+`arch` и `os` указываются согласно https://github.com/astral-sh/python-build-standalone/releases
 
-[Конфигурация standalone‑строителя](./standalone.md)
+[Конфигурация standalone‑сборщика](./standalone.md)
 
-[Конфигурация docker‑строителя](./docker.md)
+[docker‑конфигурация сборщика](./docker.md)

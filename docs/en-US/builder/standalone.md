@@ -1,6 +1,6 @@
 # Standalone Builder Configuration
 
-The standalone builder can produce independent executable files, supports multiple architectures and cross‑platform builds, and generates artifacts in a ZIP archive format.
+The standalone builder can produce independent executable files, supporting multiple architectures and cross‑platform builds, and generates artifacts in a zip archive format.
 
 The standalone builder depends on the builder configuration and the local Python configuration.
 
@@ -30,7 +30,7 @@ If you need to build multiple targets, the `standalone targets` section must be 
 
 Write `python.arch` and `python.os` according to the information on https://github.com/astral-sh/python-build-standalone/releases.
 
-`pip.platform` should be written based on https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#platform-tag.
+`pip.platform` should be written based on the specifications at https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#platform-tag.
 
 `pip.download` is used to declare project dependencies; if there are multiple dependencies, write multiple `pip.download` entries.
 

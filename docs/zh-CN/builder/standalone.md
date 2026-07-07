@@ -32,6 +32,6 @@ standalone 构建器依赖 builder 配置和本地 python 配置
 
 `pip.platform` 参考 https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#platform-tag 编写
 
-`pip.download` 用于声明项目依赖，如果由多个依赖，则需编写多个 `pip.download`
+`pip.download` 用于声明项目依赖，如果有多个依赖，则需编写多个 `pip.download`
 
-`launcher.run` 是项目入口点，可以是一个具体的 python 脚本文件或一个模块 (如 `-m http.server`)
+`launcher.run` 是项目入口点，可以是一个具体的 python 脚本文件或一个模块（如 `-m http.server`）

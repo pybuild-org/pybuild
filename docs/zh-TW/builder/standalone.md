@@ -1,6 +1,6 @@
 # standalone 構建器配置
 
-standalone 構建器可以構建出獨立的可執行檔案，支援多架構、跨平台，以 zip 壓縮包格式生成產物
+standalone 構建器可以構建出獨立的可執行文件，支援多架構、跨平台，以 zip 壓縮包格式產生產物
 
 standalone 構建器依賴 builder 配置和本地 python 配置
 

@@ -14,9 +14,9 @@
 
 `app` is the application name  
 
-`source` is the source code directory; this directory will be fully retained in the build artifacts  
+`source` is the source code directory, which will be fully retained in the build artifact  
 
-`output` is the output directory for build artifacts  
+`output` is the output directory for the build artifact  
 
 `version` is the Python interpreter version  
 

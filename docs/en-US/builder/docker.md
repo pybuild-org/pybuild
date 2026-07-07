@@ -1,8 +1,8 @@
 # Docker Builder Configuration
 
-The Docker builder can produce tar files that conform to the Docker image format without requiring the Docker CLI on the system, supports multiple architectures, and the build target only supports the Linux platform.
+The Docker builder can produce a tar file that conforms to the Docker image format without requiring the Docker CLI on the system. It supports multiple architectures, and the build target is limited to the Linux platform.
 
-The Docker builder depends on builder configuration and local Python configuration.
+The Docker builder depends on the builder configuration and the local Python configuration.
 
 ```xml
 <config name="docker image meta">
@@ -10,7 +10,7 @@ The Docker builder depends on builder configuration and local Python configurati
 </config>
 ```
 
-`tag` is the Docker image tag
+`tag` is the Docker image tag.
 
 ```xml
 <config type="group" name="docker image targets">
@@ -34,7 +34,7 @@ The Docker builder depends on builder configuration and local Python configurati
 <run job="docker build" />
 ```
 
-If you need to build multiple targets, the `docker image targets` configuration should be written multiple times.
+If you need to build multiple targets, the `docker image targets` section must be written multiple times.
 
 `image.base` is the base image of the Docker image.
 
@@ -44,10 +44,10 @@ If you need to build multiple targets, the `docker image targets` configuration 
 
 `python.os` is the target Python interpreter's operating system.
 
-`python.arch` and `python.os` should be written according to https://github.com/astral-sh/python-build-standalone/releases.
+Write `python.arch` and `python.os` according to the releases at https://github.com/astral-sh/python-build-standalone/releases.
 
-`pip.platform` should be written referencing https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#platform-tag.
+Write `pip.platform` based on the specifications at https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#platform-tag.
 
-`pip.download` is used to declare project dependencies; if there are multiple dependencies, multiple `pip.download` entries should be written.
+`pip.download` declares project dependencies; if there are multiple dependencies, write multiple `pip.download` entries.
 
-`launcher.run` is the project entry point, which can be a specific Python script file or a module (e.g., `-m http.server`).
+`launcher.run` is the project entry point and can be a specific Python script file or a module (e.g., `-m http.server`).

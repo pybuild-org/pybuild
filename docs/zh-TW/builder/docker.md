@@ -1,8 +1,8 @@
 # docker 建構器設定
 
-docker 建構器可以建構出符合 docker image 格式的 tar 檔案，而無需系統上有 docker cli，支援多架構，建構目標僅支援 linux 平台
+docker 建構器可以建構出符合 docker image 格式的 tar 檔案，而不需要系統上安裝 docker CLI，支援多架構，建構目標僅支援 linux 平台
 
-docker 建構器依賴 builder 設定和本地 python 設定
+docker 建構器依賴 builder 設定與本機 python 設定
 
 ```xml
 <config name="docker image meta">
@@ -40,14 +40,14 @@ docker 建構器依賴 builder 設定和本地 python 設定
 
 `image.arch` 是 docker image 的執行架構
 
-`python.arch` 是目標 python 直譯器執行架構
+`python.arch` 是目標 python 直譯器的執行架構
 
-`python.os` 是目標 python 直譯器執行系統
+`python.os` 是目標 python 直譯器的執行系統
 
-`python.arch` 和 `python.os` 參照 https://github.com/astral-sh/python-build-standalone/releases 編寫
+`python.arch` 和 `python.os` 請參照 https://github.com/astral-sh/python-build-standalone/releases 進行編寫
 
-`pip.platform` 參考 https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#platform-tag 編寫
+`pip.platform` 請參考 https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#platform-tag 編寫
 
-`pip.download` 用於聲明專案依賴，如果有多個依賴，則需編寫多個 `pip.download`
+`pip.download` 用於聲明專案依賴，若有多個依賴，則需編寫多個 `pip.download`
 
-`launcher.run` 是專案入口點，可以是一個具體的 python 腳本檔案或一個模組（如 `-m http.server`）
+`launcher.run` 是專案入口點，可以是具體的 python 腳本檔案或一個模組（如 `-m http.server`）
