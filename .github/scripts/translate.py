@@ -47,7 +47,6 @@ def clean():
 
 
 def translate():
-    tasks: list[tuple[str, str, pathlib.Path]] = []
     for file_path in docs_base_dir.rglob("*.md"):
         if file_path.is_file():
             source_text = file_path.read_text(encoding="utf-8")

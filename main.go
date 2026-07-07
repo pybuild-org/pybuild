@@ -9,6 +9,7 @@ import (
 	"pybuild/funcjob"
 	"pybuild/strprop"
 	"pybuild/xmlinterp"
+	"strings"
 )
 
 var i *xmlinterp.Interpreter
@@ -25,6 +26,9 @@ func main() {
 		scriptPath = "target.xml"
 	} else {
 		scriptPath = args[1]
+		if !strings.HasSuffix(scriptPath, ".xml") {
+			scriptPath += ".xml"
+		}
 	}
 
 	i = xmlinterp.New(onTagOpen, onTagClose)
