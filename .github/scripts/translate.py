@@ -1,7 +1,6 @@
 import os
 import pathlib
 import openai
-import concurrent.futures
 
 AI_API_KEY = os.getenv("AI_API_KEY")
 AI_API_URL = os.getenv("AI_API_URL")
@@ -54,24 +53,12 @@ def translate():
             relative_path = file_path.relative_to(docs_base_dir)
 
             for target in TRANSLATE_TARGET:
-                tasks.append((source_text, target, relative_path))
+                target_file_path = docs_dir / target / relative_path
+                target_file_path.parent.mkdir(parents=True, exist_ok=True)
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
-        for source, target, rel_path in tasks:
-            executor.submit(translate_single_target, source, target, rel_path)
-
-
-def translate_single_target(source_text: str, target: str, relative_path: pathlib.Path):
-    target_file_path = docs_dir / target / relative_path
-    target_file_path.parent.mkdir(parents=True, exist_ok=True)
-
-    try:
-        print("translate", target_file_path.absolute())
-        translated_text = translate_text(source_text, target)
-        target_file_path.write_text(translated_text, encoding="utf-8")
-
-    except:
-        print("translate", target_file_path.absolute(), "failed")
+                print("translate", target_file_path.absolute())
+                translated_text = translate_text(source_text, target)
+                target_file_path.write_text(translated_text, encoding="utf-8")
 
 
 def translate_text(source: str, target: str) -> str:
