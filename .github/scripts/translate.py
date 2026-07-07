@@ -65,9 +65,13 @@ def translate_single_target(source_text: str, target: str, relative_path: pathli
     target_file_path = docs_dir / target / relative_path
     target_file_path.parent.mkdir(parents=True, exist_ok=True)
 
-    print("translate", target_file_path.absolute())
-    translated_text = translate_text(source_text, target)
-    target_file_path.write_text(translated_text, encoding="utf-8")
+    try:
+        print("translate", target_file_path.absolute())
+        translated_text = translate_text(source_text, target)
+        target_file_path.write_text(translated_text, encoding="utf-8")
+
+    except:
+        print("translate", target_file_path.absolute(), "failed")
 
 
 def translate_text(source: str, target: str) -> str:
