@@ -27,7 +27,7 @@ func onTagOpen() {
 
 		strtpl.Define(
 			n.Attrs["name"],
-			n.Attrs["value"],
+			strtpl.Parse(n.Attrs["value"]),
 		)
 
 	case "use":
