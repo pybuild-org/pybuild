@@ -8,6 +8,7 @@ import (
 	"pybuild/builder/standalone"
 	"pybuild/funcjob"
 	"pybuild/strprop"
+	"pybuild/strtpl"
 	"pybuild/xmlinterp"
 	"strings"
 )
@@ -36,6 +37,8 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	strprop.Bind("template", &strtpl.TemplateConfig)
 
 	strprop.Bind("builder", &builder.BuilderConfig)
 	funcjob.Register("setup builder", builder.SetupBuilder)

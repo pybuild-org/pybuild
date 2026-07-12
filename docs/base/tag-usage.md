@@ -38,6 +38,8 @@
 
 `type="group"` 是可选的，用于声明一个组配置，此时该 `config` 标签由若干子 `config` 标签共同声明
 
+[通用配置项](./common-config.md)
+
 # prop 标签
 
 ```xml
