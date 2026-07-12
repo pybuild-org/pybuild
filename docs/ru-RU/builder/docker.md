@@ -1,6 +1,6 @@
 # Конфигурация Docker‑строителя
 
-Docker‑строитель может создавать tar‑файлы в формате Docker‑image без необходимости наличия Docker CLI в системе, поддерживает мультиархитектуру, цель сборки поддерживает только платформу Linux.
+Docker‑строитель может создавать tar‑файлы в формате Docker‑image без необходимости наличия Docker CLI в системе, поддерживает мульти‑архитектуру, цель сборки поддерживает только платформу Linux.
 
 Docker‑строитель зависит от конфигурации builder и локальной конфигурации Python.
 
@@ -10,7 +10,7 @@ Docker‑строитель зависит от конфигурации builder
 </config>
 ```
 
-`tag` — тег Docker‑image.
+`tag` — это тег Docker‑image
 
 ```xml
 <config type="group" name="docker image targets">
@@ -34,20 +34,20 @@ Docker‑строитель зависит от конфигурации builder
 <run job="docker build" />
 ```
 
-Если необходимо собрать несколько целей, секцию `docker image targets` следует добавить несколько раз.
+Если необходимо собрать несколько целей, `docker image targets` нужно прописать несколько раз.
 
-`image.base` — базовый образ Docker‑image.
+`image.base` — базовый образ Docker‑image
 
-`image.arch` — архитектура, на которой будет работать Docker‑image.
+`image.arch` — архитектура, на которой будет работать Docker‑image
 
-`python.arch` — архитектура целевого интерпретатора Python.
+`python.arch` — архитектура целевого интерпретатора Python
 
-`python.os` — операционная система целевого интерпретатора Python.
+`python.os` — операционная система целевого интерпретатора Python
 
-`python.arch` и `python.os` указываются в соответствии с https://github.com/astral-sh/python-build-standalone/releases.
+`python.arch` и `python.os` указываются согласно https://github.com/astral-sh/python-build-standalone/releases
 
-`pip.platform` указывается согласно https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#platform-tag.
+`pip.platform` указывается в соответствии с https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#platform-tag
 
-`pip.download` используется для указания зависимостей проекта; если зависимостей несколько, необходимо добавить несколько записей `pip.download`.
+`pip.download` используется для указания зависимостей проекта; если зависимостей несколько, необходимо указать несколько `pip.download`
 
-`launcher.run` — точка входа проекта; может быть конкретным файлом скрипта Python или модулем (например, `-m http.server`).
+`launcher.run` — точка входа проекта; может быть конкретный Python‑скрипт или модуль (например, `-m http.server`)

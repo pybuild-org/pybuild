@@ -1,4 +1,4 @@
-# Builder Configuration
+# builder configuration
 
 ```xml
 <config name="builder">
@@ -24,7 +24,7 @@
 
 `version` and `release` should be written according to https://github.com/astral-sh/python-build-standalone/releases  
 
-# Local Python Configuration
+# Local python configuration
 
 ```xml
 <config name="python">
@@ -41,6 +41,6 @@
 
 `arch` and `os` should be written according to https://github.com/astral-sh/python-build-standalone/releases  
 
-[Standalone Builder Configuration](./standalone.md)
+[standalone builder configuration](./standalone.md)
 
-[Docker Builder Configuration](./docker.md)
+[docker builder configuration](./docker.md)

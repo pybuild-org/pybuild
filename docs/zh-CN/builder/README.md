@@ -1,4 +1,4 @@
-# builder 配置
+# 构建器配置
 
 ```xml
 <config name="builder">

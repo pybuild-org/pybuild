@@ -40,9 +40,9 @@ If you need to build multiple targets, the `docker image targets` section must b
 
 `image.arch` is the runtime architecture of the Docker image.
 
-`python.arch` is the target Python interpreter's architecture.
+`python.arch` is the architecture of the target Python interpreter.
 
-`python.os` is the target Python interpreter's operating system.
+`python.os` is the operating system of the target Python interpreter.
 
 Write `python.arch` and `python.os` according to the releases at https://github.com/astral-sh/python-build-standalone/releases.
 

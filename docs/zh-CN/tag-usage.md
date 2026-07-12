@@ -14,6 +14,8 @@
 
 用于定义值别名的标签，`name` 用于声明值别名，`value` 用于声明值
 
+`value` 参数可以通过 `{name}` 使用之前的 define 标签中定义过的值别名
+
 # use 标签
 
 ```xml
@@ -37,6 +39,8 @@
 用于声明配置的标签，`name` 用于声明配置名称
 
 `type="group"` 是可选的，用于声明一个组配置，此时该 `config` 标签由若干子 `config` 标签共同声明
+
+[通用配置项](./common-config.md)
 
 # prop 标签
 
